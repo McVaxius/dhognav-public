@@ -3,7 +3,7 @@
   "Name": "DhogNav",
   "InternalName": "DhogNav",
   "RepoUrl": "https://github.com/McVaxius/dhognav-public",
-  "AssemblyVersion": "1.2.0.4",
+  "AssemblyVersion": "1.3.0.0",
   "Punchline": "DhogNav information and privately granted module access.",
   "Description": "The free public DhogNav plugin provides information and loads authorized DhogNav modules. Module access is arranged privately with McVaxius through the community Discord.",
   "ApplicableVersion": "any",
