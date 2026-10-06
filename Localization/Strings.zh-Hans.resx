@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="Pink" xml:space="preserve"><value>粉色</value></data>
+  <data name="Blue" xml:space="preserve"><value>蓝色</value></data>
+  <data name="Custom RGB" xml:space="preserve"><value>自定义 RGB</value></data>
+  <data name="Compact mode" xml:space="preserve"><value>紧凑模式</value></data>
+  <data name="Teal" xml:space="preserve"><value>青绿</value></data>
+  <data name="Language" xml:space="preserve"><value>语言</value></data>
+  <data name="Color" xml:space="preserve"><value>颜色</value></data>
+  <data name="PUBLIC ACCESS HOST" xml:space="preserve"><value>公共访问宿主</value></data>
+  <data name="Saved locations and navigation" xml:space="preserve"><value>已保存地点与导航</value></data>
+  <data name="This public plugin provides the introduction and privately granted module access." xml:space="preserve"><value>此公共插件提供介绍页面和私下授予的模块访问权限。</value></data>
+  <data name="JOIN THE COMMUNITY" xml:space="preserve"><value>加入社区</value></data>
+  <data name="Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access." xml:space="preserve"><value>访问 The Dumpster Fire 社区获取更新、参与讨论并向 McVaxius 申请访问。赞助不会自动授予访问权限。</value></data>
+  <data name="Open Discord" xml:space="preserve"><value>打开 Discord</value></data>
+  <data name="Support on Ko-fi" xml:space="preserve"><value>在 Ko-fi 上赞助</value></data>
+  <data name="INSTALLATION (APM)" xml:space="preserve"><value>安装（APM）</value></data>
+  <data name="Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies." xml:space="preserve"><value>复制访问 ZIP 的直链。在 APM 中包含并启用 DhogNav，信任发布者，然后选择检查剪贴板更新。仅在符合条件的副本重复时选择一行。</value></data>
+  <data name="Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav." xml:space="preserve"><value>更新完成前请保持 DhogNav 和 APM 启用。公共插件会保留安装；重启 DhogNav 并打开 /dnav。</value></data>
+  <data name="Access could not initialize. Check /xllog for [Access] details." xml:space="preserve"><value>无法初始化访问。请在 /xllog 中查看 [Access] 详情。</value></data>
+  <data name="Check installed access" xml:space="preserve"><value>检查已安装访问</value></data>
+  <data name="Welcome to DhogNav. Get the full plugin through Discord and install it with Aethertek Plugin Manager (APM)." xml:space="preserve"><value>欢迎使用 DhogNav。通过 Discord 获取完整插件，并使用 Aethertek Plugin Manager（APM）安装。</value></data>
+  <data name="Visit The Dumpster Fire community for plugin help and discussion." xml:space="preserve"><value>访问 The Dumpster Fire 社区获取插件帮助并参与讨论。</value></data>
+  <data name="Get the full plugin on Discord" xml:space="preserve"><value>在 Discord 获取完整插件</value></data>
+  <data name="Copy the direct full-plugin ZIP URL from Discord. Open /apm and trust the publisher. Select DhogNav, then choose Update selected plugin from clipboard." xml:space="preserve"><value>从 Discord 复制完整插件 ZIP 的直链。打开 /apm 并信任发布者。选择 DhogNav，然后选择从剪贴板更新所选插件。</value></data>
+  <data name="Keep APM enabled until the update finishes. The full plugin replaces this introduction and opens with /dnav." xml:space="preserve"><value>更新完成前请保持 APM 启用。完整插件将替换此介绍页面，可通过 /dnav 打开。</value></data>
+  <data name="Preparing DhogNav interface fonts..." xml:space="preserve"><value>正在准备 DhogNav 界面字体...</value></data>
+  <data name="DhogNav interface fonts are unavailable. See the Dalamud log." xml:space="preserve"><value>DhogNav 界面字体不可用。请查看 Dalamud 日志。</value></data>
+  <data name="ACCESS" xml:space="preserve">
+    <value>访问权限</value>
+  </data>
+  <data name="Window appearance" xml:space="preserve"><value>窗口外观</value></data>
+  <data name="Compact visible on main window" xml:space="preserve"><value>在主窗口显示紧凑模式开关</value></data>
+  <data name="Language visible on main window" xml:space="preserve"><value>在主窗口显示语言选择</value></data>
+  <data name="Transparency" xml:space="preserve"><value>透明度</value></data>
+  <data name="Opacity (%)" xml:space="preserve"><value>不透明度 (%)</value></data>
+  <data name="Auto-fade when unfocused" xml:space="preserve"><value>失去焦点后自动淡化</value></data>
+  <data name="Unfocused opacity (%)" xml:space="preserve"><value>未聚焦时的不透明度 (%)</value></data>
+  <data name="Unfocused delay (seconds)" xml:space="preserve"><value>失去焦点后的等待时间 (秒)</value></data>
+</root>

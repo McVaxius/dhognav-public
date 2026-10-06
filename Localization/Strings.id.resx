@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="Pink" xml:space="preserve"><value>Merah muda</value></data>
+  <data name="Blue" xml:space="preserve"><value>Biru</value></data>
+  <data name="Custom RGB" xml:space="preserve"><value>RGB kustom</value></data>
+  <data name="Compact mode" xml:space="preserve"><value>Mode ringkas</value></data>
+  <data name="Teal" xml:space="preserve"><value>Biru kehijauan</value></data>
+  <data name="Language" xml:space="preserve"><value>Bahasa</value></data>
+  <data name="Color" xml:space="preserve"><value>Warna</value></data>
+  <data name="PUBLIC ACCESS HOST" xml:space="preserve"><value>HOST AKSES PUBLIK</value></data>
+  <data name="Saved locations and navigation" xml:space="preserve"><value>Lokasi tersimpan dan navigasi</value></data>
+  <data name="This public plugin provides the introduction and privately granted module access." xml:space="preserve"><value>Plugin publik ini menyediakan pengantar dan akses modul yang diberikan secara privat.</value></data>
+  <data name="JOIN THE COMMUNITY" xml:space="preserve"><value>BERGABUNG DENGAN KOMUNITAS</value></data>
+  <data name="Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access." xml:space="preserve"><value>Kunjungi komunitas The Dumpster Fire untuk pembaruan, diskusi, dan akses dari McVaxius. Dukungan tidak otomatis memberikan akses.</value></data>
+  <data name="Open Discord" xml:space="preserve"><value>Buka Discord</value></data>
+  <data name="Support on Ko-fi" xml:space="preserve"><value>Dukung di Ko-fi</value></data>
+  <data name="INSTALLATION (APM)" xml:space="preserve"><value>INSTALASI (APM)</value></data>
+  <data name="Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies." xml:space="preserve"><value>Salin tautan ZIP akses langsung Anda. Sertakan dan aktifkan DhogNav dalam APM, percayai penerbit, lalu pilih Periksa pembaruan dari papan klip. Pilih baris hanya jika ada salinan memenuhi syarat yang duplikat.</value></data>
+  <data name="Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav." xml:space="preserve"><value>Biarkan DhogNav dan APM aktif hingga pembaruan selesai. Plugin publik tetap terpasang; mulai ulang DhogNav dan buka /dnav.</value></data>
+  <data name="Access could not initialize. Check /xllog for [Access] details." xml:space="preserve"><value>Akses tidak dapat diinisialisasi. Periksa /xllog untuk detail [Access].</value></data>
+  <data name="Check installed access" xml:space="preserve"><value>Periksa akses terpasang</value></data>
+  <data name="Welcome to DhogNav. Get the full plugin through Discord and install it with Aethertek Plugin Manager (APM)." xml:space="preserve"><value>Selamat datang di DhogNav. Dapatkan plugin lengkap melalui Discord dan pasang dengan Aethertek Plugin Manager (APM).</value></data>
+  <data name="Visit The Dumpster Fire community for plugin help and discussion." xml:space="preserve"><value>Kunjungi komunitas The Dumpster Fire untuk bantuan dan diskusi plugin.</value></data>
+  <data name="Get the full plugin on Discord" xml:space="preserve"><value>Dapatkan plugin lengkap di Discord</value></data>
+  <data name="Copy the direct full-plugin ZIP URL from Discord. Open /apm and trust the publisher. Select DhogNav, then choose Update selected plugin from clipboard." xml:space="preserve"><value>Salin URL ZIP langsung plugin lengkap dari Discord. Buka /apm dan percayai penerbit. Pilih DhogNav, lalu pilih Perbarui plugin terpilih dari papan klip.</value></data>
+  <data name="Keep APM enabled until the update finishes. The full plugin replaces this introduction and opens with /dnav." xml:space="preserve"><value>Biarkan APM aktif hingga pembaruan selesai. Plugin lengkap menggantikan pengantar ini dan dibuka dengan /dnav.</value></data>
+  <data name="Preparing DhogNav interface fonts..." xml:space="preserve"><value>Menyiapkan font antarmuka DhogNav...</value></data>
+  <data name="DhogNav interface fonts are unavailable. See the Dalamud log." xml:space="preserve"><value>Font antarmuka DhogNav tidak tersedia. Lihat log Dalamud.</value></data>
+  <data name="ACCESS" xml:space="preserve"><value>AKSES</value></data>
+  <data name="Window appearance" xml:space="preserve"><value>Tampilan jendela</value></data>
+  <data name="Compact visible on main window" xml:space="preserve"><value>Tampilkan mode ringkas di jendela utama</value></data>
+  <data name="Language visible on main window" xml:space="preserve"><value>Tampilkan pilihan bahasa di jendela utama</value></data>
+  <data name="Transparency" xml:space="preserve"><value>Transparansi</value></data>
+  <data name="Opacity (%)" xml:space="preserve"><value>Opasitas (%)</value></data>
+  <data name="Auto-fade when unfocused" xml:space="preserve"><value>Redupkan otomatis saat tidak fokus</value></data>
+  <data name="Unfocused opacity (%)" xml:space="preserve"><value>Opasitas saat tidak fokus (%)</value></data>
+  <data name="Unfocused delay (seconds)" xml:space="preserve"><value>Jeda saat tidak fokus (detik)</value></data>
+</root>
+

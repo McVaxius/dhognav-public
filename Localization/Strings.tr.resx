@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="Pink" xml:space="preserve"><value>Pembe</value></data>
+  <data name="Blue" xml:space="preserve"><value>Mavi</value></data>
+  <data name="Custom RGB" xml:space="preserve"><value>Özel RGB</value></data>
+  <data name="Compact mode" xml:space="preserve"><value>Kompakt mod</value></data>
+  <data name="Teal" xml:space="preserve"><value>Turkuaz</value></data>
+  <data name="Language" xml:space="preserve"><value>Dil</value></data>
+  <data name="Color" xml:space="preserve"><value>Renk</value></data>
+  <data name="PUBLIC ACCESS HOST" xml:space="preserve"><value>GENEL ERİŞİM SUNUCUSU</value></data>
+  <data name="Saved locations and navigation" xml:space="preserve"><value>Kayıtlı konumlar ve gezinme</value></data>
+  <data name="This public plugin provides the introduction and privately granted module access." xml:space="preserve"><value>Bu genel eklenti tanıtım ve özel olarak verilen modül erişimini sağlar.</value></data>
+  <data name="JOIN THE COMMUNITY" xml:space="preserve"><value>TOPLULUĞA KATIL</value></data>
+  <data name="Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access." xml:space="preserve"><value>Güncellemeler, tartışma ve McVaxius&apos;tan erişim için The Dumpster Fire topluluğunu ziyaret edin. Destek olmak otomatik erişim sağlamaz.</value></data>
+  <data name="Open Discord" xml:space="preserve"><value>Discord&apos;u aç</value></data>
+  <data name="Support on Ko-fi" xml:space="preserve"><value>Ko-fi&apos;de destek ol</value></data>
+  <data name="INSTALLATION (APM)" xml:space="preserve"><value>KURULUM (APM)</value></data>
+  <data name="Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies." xml:space="preserve"><value>Doğrudan erişim ZIP bağlantınızı kopyalayın. DhogNav&apos;ı APM&apos;ye dahil edip açın, yayıncıya güvenin ve Panodaki güncellemeleri denetle&apos;yi seçin. Yalnızca uygun kopyalar yineleniyorsa bir satır seçin.</value></data>
+  <data name="Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav." xml:space="preserve"><value>Güncelleme bitene dek DhogNav ve APM&apos;yi açık tutun. Genel eklenti kurulu kalır; DhogNav&apos;ı yeniden başlatıp /dnav açın.</value></data>
+  <data name="Access could not initialize. Check /xllog for [Access] details." xml:space="preserve"><value>Erişim başlatılamadı. [Access] ayrıntıları için /xllog&apos;u denetleyin.</value></data>
+  <data name="Check installed access" xml:space="preserve"><value>Kurulu erişimi denetle</value></data>
+  <data name="Welcome to DhogNav. Get the full plugin through Discord and install it with Aethertek Plugin Manager (APM)." xml:space="preserve"><value>DhogNav&apos;a hoş geldiniz. Tam eklentiyi Discord üzerinden edinip Aethertek Plugin Manager (APM) ile kurun.</value></data>
+  <data name="Visit The Dumpster Fire community for plugin help and discussion." xml:space="preserve"><value>Eklenti yardımı ve tartışma için The Dumpster Fire topluluğunu ziyaret edin.</value></data>
+  <data name="Get the full plugin on Discord" xml:space="preserve"><value>Tam eklentiyi Discord&apos;dan edin</value></data>
+  <data name="Copy the direct full-plugin ZIP URL from Discord. Open /apm and trust the publisher. Select DhogNav, then choose Update selected plugin from clipboard." xml:space="preserve"><value>Tam eklentinin doğrudan ZIP URL&apos;sini Discord&apos;dan kopyalayın. /apm açıp yayıncıya güvenin. DhogNav&apos;ı seçin, sonra Seçili eklentiyi panodan güncelle&apos;yi seçin.</value></data>
+  <data name="Keep APM enabled until the update finishes. The full plugin replaces this introduction and opens with /dnav." xml:space="preserve"><value>Güncelleme bitene dek APM&apos;yi açık tutun. Tam eklenti bu tanıtımın yerini alır ve /dnav ile açılır.</value></data>
+  <data name="Preparing DhogNav interface fonts..." xml:space="preserve"><value>DhogNav arayüz yazı tipleri hazırlanıyor...</value></data>
+  <data name="DhogNav interface fonts are unavailable. See the Dalamud log." xml:space="preserve"><value>DhogNav arayüz yazı tipleri kullanılamıyor. Dalamud günlüğüne bakın.</value></data>
+  <data name="ACCESS" xml:space="preserve"><value>ERİŞİM</value></data>
+  <data name="Window appearance" xml:space="preserve"><value>Pencere görünümü</value></data>
+  <data name="Compact visible on main window" xml:space="preserve"><value>Ana pencerede kompakt modu göster</value></data>
+  <data name="Language visible on main window" xml:space="preserve"><value>Ana pencerede dil seçimini göster</value></data>
+  <data name="Transparency" xml:space="preserve"><value>Saydamlık</value></data>
+  <data name="Opacity (%)" xml:space="preserve"><value>Opaklık (%)</value></data>
+  <data name="Auto-fade when unfocused" xml:space="preserve"><value>Odak yokken otomatik soldur</value></data>
+  <data name="Unfocused opacity (%)" xml:space="preserve"><value>Odak yokken opaklık (%)</value></data>
+  <data name="Unfocused delay (seconds)" xml:space="preserve"><value>Odak kaybı gecikmesi (saniye)</value></data>
+</root>
+

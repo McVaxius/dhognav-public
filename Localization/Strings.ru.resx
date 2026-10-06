@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="Pink" xml:space="preserve"><value>Розовый</value></data>
+  <data name="Blue" xml:space="preserve"><value>Синий</value></data>
+  <data name="Custom RGB" xml:space="preserve"><value>Свой RGB</value></data>
+  <data name="Compact mode" xml:space="preserve"><value>Компактный режим</value></data>
+  <data name="Teal" xml:space="preserve"><value>Бирюзовый</value></data>
+  <data name="Language" xml:space="preserve"><value>Язык</value></data>
+  <data name="Color" xml:space="preserve"><value>Цвет</value></data>
+  <data name="PUBLIC ACCESS HOST" xml:space="preserve"><value>ПУБЛИЧНЫЙ ХОСТ ДОСТУПА</value></data>
+  <data name="Saved locations and navigation" xml:space="preserve"><value>Сохранённые места и навигация</value></data>
+  <data name="This public plugin provides the introduction and privately granted module access." xml:space="preserve"><value>Этот публичный плагин содержит вводную страницу и доступ к модулю, предоставляемый индивидуально.</value></data>
+  <data name="JOIN THE COMMUNITY" xml:space="preserve"><value>ПРИСОЕДИНЯЙТЕСЬ К СООБЩЕСТВУ</value></data>
+  <data name="Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access." xml:space="preserve"><value>Посетите сообщество The Dumpster Fire для обновлений, обсуждений и получения доступа от McVaxius. Поддержка не предоставляет доступ автоматически.</value></data>
+  <data name="Open Discord" xml:space="preserve"><value>Открыть Discord</value></data>
+  <data name="Support on Ko-fi" xml:space="preserve"><value>Поддержать на Ko-fi</value></data>
+  <data name="INSTALLATION (APM)" xml:space="preserve"><value>УСТАНОВКА (APM)</value></data>
+  <data name="Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies." xml:space="preserve"><value>Скопируйте прямую ссылку на ZIP доступа. Включите DhogNav в APM и активируйте его, доверьтесь издателю, затем выберите проверку обновлений из буфера обмена. Выбирайте строку только при наличии нескольких подходящих копий.</value></data>
+  <data name="Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav." xml:space="preserve"><value>Оставьте DhogNav и APM включёнными до завершения обновления. Публичный плагин остаётся установленным; перезапустите DhogNav и откройте /dnav.</value></data>
+  <data name="Access could not initialize. Check /xllog for [Access] details." xml:space="preserve"><value>Не удалось инициализировать доступ. Проверьте сведения [Access] в /xllog.</value></data>
+  <data name="Check installed access" xml:space="preserve"><value>Проверить установленный доступ</value></data>
+  <data name="Welcome to DhogNav. Get the full plugin through Discord and install it with Aethertek Plugin Manager (APM)." xml:space="preserve"><value>Добро пожаловать в DhogNav. Получите полный плагин через Discord и установите его с помощью Aethertek Plugin Manager (APM).</value></data>
+  <data name="Visit The Dumpster Fire community for plugin help and discussion." xml:space="preserve"><value>Посетите сообщество The Dumpster Fire для помощи с плагином и обсуждений.</value></data>
+  <data name="Get the full plugin on Discord" xml:space="preserve"><value>Получить полный плагин в Discord</value></data>
+  <data name="Copy the direct full-plugin ZIP URL from Discord. Open /apm and trust the publisher. Select DhogNav, then choose Update selected plugin from clipboard." xml:space="preserve"><value>Скопируйте прямую ссылку на ZIP полного плагина из Discord. Откройте /apm и доверьтесь издателю. Выберите DhogNav, затем обновление выбранного плагина из буфера обмена.</value></data>
+  <data name="Keep APM enabled until the update finishes. The full plugin replaces this introduction and opens with /dnav." xml:space="preserve"><value>Оставьте APM включённым до завершения обновления. Полный плагин заменяет эту вводную страницу и открывается через /dnav.</value></data>
+  <data name="Preparing DhogNav interface fonts..." xml:space="preserve"><value>Подготовка шрифтов интерфейса DhogNav...</value></data>
+  <data name="DhogNav interface fonts are unavailable. See the Dalamud log." xml:space="preserve"><value>Шрифты интерфейса DhogNav недоступны. См. журнал Dalamud.</value></data>
+  <data name="ACCESS" xml:space="preserve">
+    <value>ДОСТУП</value>
+  </data>
+  <data name="Window appearance" xml:space="preserve"><value>Внешний вид окна</value></data>
+  <data name="Compact visible on main window" xml:space="preserve"><value>Показывать компактный режим в главном окне</value></data>
+  <data name="Language visible on main window" xml:space="preserve"><value>Показывать выбор языка в главном окне</value></data>
+  <data name="Transparency" xml:space="preserve"><value>Прозрачность</value></data>
+  <data name="Opacity (%)" xml:space="preserve"><value>Непрозрачность (%)</value></data>
+  <data name="Auto-fade when unfocused" xml:space="preserve"><value>Автоматически затемнять без фокуса</value></data>
+  <data name="Unfocused opacity (%)" xml:space="preserve"><value>Непрозрачность без фокуса (%)</value></data>
+  <data name="Unfocused delay (seconds)" xml:space="preserve"><value>Задержка без фокуса (секунды)</value></data>
+</root>

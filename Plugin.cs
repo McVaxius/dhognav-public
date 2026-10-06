@@ -17,6 +17,7 @@ public sealed class Plugin : IDalamudPlugin
     private readonly ICommandManager commands;
     private readonly WindowSystem windows = new("DhogNav.Information");
     private readonly ModuleLoader loader = new();
+    private readonly PublicUi presentation;
     private readonly IntroductionWindow introduction;
     private readonly List<Action> cleanup = [];
     private int disposed;
@@ -27,9 +28,10 @@ public sealed class Plugin : IDalamudPlugin
         this.pluginInterface = pluginInterface;
         this.commands = commands;
         Log = log;
-        introduction = new IntroductionWindow(pluginInterface, textures, loader, RefreshAccess);
+        presentation = new PublicUi(pluginInterface, textures);
         try
         {
+            introduction = new IntroductionWindow(pluginInterface, textures, loader, RefreshAccess, presentation);
             cleanup.Add(windows.RemoveAllWindows);
             windows.AddWindow(introduction);
             if (!commands.AddHandler("/dnav", new CommandInfo(OnCommand) { HelpMessage = "Open DhogNav." }))
@@ -39,8 +41,8 @@ public sealed class Plugin : IDalamudPlugin
             pluginInterface.UiBuilder.Draw += Draw;
             cleanup.Add(() => pluginInterface.UiBuilder.OpenMainUi -= Open);
             pluginInterface.UiBuilder.OpenMainUi += Open;
-            cleanup.Add(() => pluginInterface.UiBuilder.OpenConfigUi -= Open);
-            pluginInterface.UiBuilder.OpenConfigUi += Open;
+            cleanup.Add(() => pluginInterface.UiBuilder.OpenConfigUi -= OpenSettings);
+            pluginInterface.UiBuilder.OpenConfigUi += OpenSettings;
             var directory = pluginInterface.GetIpcProvider<string>("DhogNav.Access.Directory.v1");
             cleanup.Add(directory.UnregisterFunc);
             directory.RegisterFunc(() => Path.Combine(pluginInterface.GetPluginConfigDirectory(), "tasks"));
@@ -84,6 +86,13 @@ public sealed class Plugin : IDalamudPlugin
         else introduction.IsOpen = true;
     }
 
+    private void OpenSettings()
+    {
+        if (IsDisposed) return;
+        if (loader.Module is { } module) module.OpenMainWindow();
+        else introduction.OpenSettings();
+    }
+
     private void OnCommand(string command, string arguments)
     {
         if (IsDisposed) return;
@@ -91,7 +100,12 @@ public sealed class Plugin : IDalamudPlugin
         else introduction.IsOpen = true;
     }
 
-    private void Draw() { if (IsDisposed) return; windows.Draw(); loader.Module?.Draw(); }
+    private void Draw()
+    {
+        if (IsDisposed) return;
+        if (introduction.IsOpen) presentation.Draw(windows.Draw, error => Log?.Error(error, "DhogNav public UI font coverage failed."));
+        loader.Module?.Draw();
+    }
 
     public void Dispose()
     {
@@ -99,6 +113,7 @@ public sealed class Plugin : IDalamudPlugin
         for (var index = cleanup.Count - 1; index >= 0; --index) Cleanup(cleanup[index]);
         cleanup.Clear();
         Cleanup(loader.Dispose);
+        Cleanup(presentation.Dispose);
     }
 
     private static void Cleanup(Action action)

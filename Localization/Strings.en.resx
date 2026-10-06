@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="Pink" xml:space="preserve"><value>Pink</value></data>
+  <data name="Blue" xml:space="preserve"><value>Blue</value></data>
+  <data name="Custom RGB" xml:space="preserve"><value>Custom RGB</value></data>
+  <data name="Compact mode" xml:space="preserve"><value>Compact mode</value></data>
+  <data name="Teal" xml:space="preserve"><value>Teal</value></data>
+  <data name="Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Color" xml:space="preserve"><value>Color</value></data>
+  <data name="PUBLIC ACCESS HOST" xml:space="preserve"><value>PUBLIC ACCESS HOST</value></data>
+  <data name="Saved locations and navigation" xml:space="preserve"><value>Saved locations and navigation</value></data>
+  <data name="This public plugin provides the introduction and privately granted module access." xml:space="preserve"><value>This public plugin provides the introduction and privately granted module access.</value></data>
+  <data name="JOIN THE COMMUNITY" xml:space="preserve"><value>JOIN THE COMMUNITY</value></data>
+  <data name="Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access." xml:space="preserve"><value>Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access.</value></data>
+  <data name="Open Discord" xml:space="preserve"><value>Open Discord</value></data>
+  <data name="Support on Ko-fi" xml:space="preserve"><value>Support on Ko-fi</value></data>
+  <data name="INSTALLATION (APM)" xml:space="preserve"><value>INSTALLATION (APM)</value></data>
+  <data name="Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies." xml:space="preserve"><value>Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies.</value></data>
+  <data name="Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav." xml:space="preserve"><value>Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav.</value></data>
+  <data name="Access could not initialize. Check /xllog for [Access] details." xml:space="preserve"><value>Access could not initialize. Check /xllog for [Access] details.</value></data>
+  <data name="Check installed access" xml:space="preserve"><value>Check installed access</value></data>
+  <data name="Welcome to DhogNav. Get the full plugin through Discord and install it with Aethertek Plugin Manager (APM)." xml:space="preserve"><value>Welcome to DhogNav. Get the full plugin through Discord and install it with Aethertek Plugin Manager (APM).</value></data>
+  <data name="Visit The Dumpster Fire community for plugin help and discussion." xml:space="preserve"><value>Visit The Dumpster Fire community for plugin help and discussion.</value></data>
+  <data name="Get the full plugin on Discord" xml:space="preserve"><value>Get the full plugin on Discord</value></data>
+  <data name="Copy the direct full-plugin ZIP URL from Discord. Open /apm and trust the publisher. Select DhogNav, then choose Update selected plugin from clipboard." xml:space="preserve"><value>Copy the direct full-plugin ZIP URL from Discord. Open /apm and trust the publisher. Select DhogNav, then choose Update selected plugin from clipboard.</value></data>
+  <data name="Keep APM enabled until the update finishes. The full plugin replaces this introduction and opens with /dnav." xml:space="preserve"><value>Keep APM enabled until the update finishes. The full plugin replaces this introduction and opens with /dnav.</value></data>
+  <data name="Preparing DhogNav interface fonts..." xml:space="preserve"><value>Preparing DhogNav interface fonts...</value></data>
+  <data name="DhogNav interface fonts are unavailable. See the Dalamud log." xml:space="preserve"><value>DhogNav interface fonts are unavailable. See the Dalamud log.</value></data>
+  <data name="ACCESS" xml:space="preserve">
+    <value>ACCESS</value>
+  </data>
+  <data name="Window appearance" xml:space="preserve"><value>Window appearance</value></data>
+  <data name="Compact visible on main window" xml:space="preserve"><value>Compact visible on main window</value></data>
+  <data name="Language visible on main window" xml:space="preserve"><value>Language visible on main window</value></data>
+  <data name="Transparency" xml:space="preserve"><value>Transparency</value></data>
+  <data name="Opacity (%)" xml:space="preserve"><value>Opacity (%)</value></data>
+  <data name="Auto-fade when unfocused" xml:space="preserve"><value>Auto-fade when unfocused</value></data>
+  <data name="Unfocused opacity (%)" xml:space="preserve"><value>Unfocused opacity (%)</value></data>
+  <data name="Unfocused delay (seconds)" xml:space="preserve"><value>Unfocused delay (seconds)</value></data>
+</root>

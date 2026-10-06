@@ -2,6 +2,6 @@ DhogNav third-party notices
 
 DhogNav runs inside Dalamud and references host-provided Dalamud, FFXIVClientStructs, Lumina and .NET assemblies. These assemblies are supplied by the host/runtime and are not included in this plugin's public or access ZIPs. Their respective owners retain their rights and their own license terms apply.
 
-No third-party source packages, native libraries or license/notice files were present in the imported DhogNav source tree. Do not remove notices from any dependency that is added or redistributed later.
+The public ZIP includes AethertekUI.dll as the UI companion. Segoe fonts come from Windows and symbol/CJK fonts come from the Dalamud host; font files are not distributed in the ZIP. Do not remove notices from any dependency that is added or redistributed later.
 
 Obfuscar is a development-time protection tool and is not included in runtime plugin packages. Its downloaded tool distribution remains subject to its accompanying license.

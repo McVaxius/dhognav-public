@@ -10,11 +10,15 @@ Keep the updated public DhogNav host installed and enabled. In `/apm`, include `
 
 The public host provides the access directory, validation and refresh IPC endpoints required by APM. Private versions advance independently of the public host version.
 
+The introduction groups access information, community links and APM installation steps into three cards. Color, Language and **C** select the whole-window theme, language and compact spacing. The interface supports English, German, French, Spanish, Italian, Russian, Japanese, Korean, Simplified Chinese, Vietnamese, Brazilian Portuguese, Indonesian, Polish, Turkish and Hindi. Preferences share the existing version-1 configuration and preserve private settings. **Check installed access** keeps the existing access refresh action. Hindi captions and editor text use scoped Windows text shaping while retaining the existing native font roles and symbols. Current Debug/x64 source builds and offline Hindi window, control and save-path checks pass. Managed-font readiness, GPU rendering and game acceptance remain pending.
+
 ## Build
 
-This repository contains the complete public host source, loader, public trust anchor and manifest validation. It builds without private source or files from `!cryptography`. With .NET 10 and Dalamud API 15 references available, run `dotnet build DhogNav.csproj -c Release -p:Platform=x64`. The package is `bin/x64/Release/DhogNav/latest.zip`; `Z:\dnavp.bat` also copies it to this repository's `latest.zip`.
+This repository contains the complete public host source, loader, public trust anchor and manifest validation. It builds without private source or files from `!cryptography`. Keep the `aethertekUI` checkout beside this repository. With .NET SDK 10.0.201 and Dalamud API 15 references available, run `dotnet build DhogNav.csproj -c Release -p:Platform=x64`. The eight-file public package includes `AethertekUI.dll` and `AethertekUI.Dalamud.dll` and is written to `bin/x64/Release/DhogNav/latest.zip`; `Z:\dnavp.bat` also copies it to this repository's `latest.zip`. GitHub Actions checks out the sibling UI repository using the read-only `AETHERTEKUI_DEPLOY_KEY` secret.
 
-Public release version: `1.2.0.3`. The CLR assembly identity remains `1.0.0.0` for private-module compatibility.
+Public release version: `1.3.0.0`. The CLR assembly identity remains `1.0.0.0` for private-module compatibility.
+
+The dependency checkout is pinned to published AethertekUI revision `d00edf3b80fe16357515a9882de3ee4c6f4a2f2b`, which contains the required window opacity and community icon APIs. When adopting a newer library API, update this existing ref after that library revision is published.
 
 ## Ownership
 

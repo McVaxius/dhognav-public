@@ -131,6 +131,12 @@ internal sealed class ModuleLoader : IDisposable
             var contract = typeof(IModule).Assembly;
             if (name.Name == contract.GetName().Name)
                 return name.FullName == contract.GetName().FullName ? contract : throw new FileLoadException("Access contract mismatch.");
+            var uiLibrary = typeof(AethertekUI.MaterialTheme).Assembly;
+            if (name.Name == uiLibrary.GetName().Name)
+                return name.FullName == uiLibrary.GetName().FullName ? uiLibrary : throw new FileLoadException("Access UI library identity mismatch.");
+            var uiAdapter = typeof(AethertekUI.Dalamud.MaterialWindowMotion).Assembly;
+            if (name.Name == uiAdapter.GetName().Name)
+                return name.FullName == uiAdapter.GetName().FullName ? uiAdapter : throw new FileLoadException("Access UI adapter identity mismatch.");
             var runtime = Path.GetDirectoryName(typeof(object).Assembly.Location)!;
             var dalamud = Path.GetDirectoryName(typeof(IDalamudPluginInterface).Assembly.Location)!;
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())

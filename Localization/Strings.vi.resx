@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms</value></resheader>
+  <data name="Pink" xml:space="preserve"><value>Hồng</value></data>
+  <data name="Blue" xml:space="preserve"><value>Xanh dương</value></data>
+  <data name="Custom RGB" xml:space="preserve"><value>RGB tùy chỉnh</value></data>
+  <data name="Compact mode" xml:space="preserve"><value>Chế độ gọn</value></data>
+  <data name="Teal" xml:space="preserve"><value>Xanh ngọc</value></data>
+  <data name="Language" xml:space="preserve"><value>Ngôn ngữ</value></data>
+  <data name="Color" xml:space="preserve"><value>Màu</value></data>
+  <data name="PUBLIC ACCESS HOST" xml:space="preserve"><value>MÁY CHỦ TRUY CẬP CÔNG KHAI</value></data>
+  <data name="Saved locations and navigation" xml:space="preserve"><value>Địa điểm đã lưu và điều hướng</value></data>
+  <data name="This public plugin provides the introduction and privately granted module access." xml:space="preserve"><value>Plugin công khai này cung cấp phần giới thiệu và quyền truy cập mô-đun được cấp riêng.</value></data>
+  <data name="JOIN THE COMMUNITY" xml:space="preserve"><value>THAM GIA CỘNG ĐỒNG</value></data>
+  <data name="Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access." xml:space="preserve"><value>Tham gia cộng đồng The Dumpster Fire để cập nhật, thảo luận và nhận quyền truy cập từ McVaxius. Ủng hộ không tự động cấp quyền truy cập.</value></data>
+  <data name="Open Discord" xml:space="preserve"><value>Mở Discord</value></data>
+  <data name="Support on Ko-fi" xml:space="preserve"><value>Ủng hộ qua Ko-fi</value></data>
+  <data name="INSTALLATION (APM)" xml:space="preserve"><value>CÀI ĐẶT (APM)</value></data>
+  <data name="Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies." xml:space="preserve"><value>Sao chép liên kết ZIP truy cập trực tiếp. Thêm và bật DhogNav trong APM, tin cậy nhà phát hành, rồi chọn Kiểm tra cập nhật từ bộ nhớ tạm. Chỉ chọn hàng khi có nhiều bản sao đủ điều kiện trùng nhau.</value></data>
+  <data name="Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav." xml:space="preserve"><value>Giữ DhogNav và APM bật đến khi cập nhật xong. Plugin công khai vẫn được cài; khởi động lại DhogNav và mở /dnav.</value></data>
+  <data name="Access could not initialize. Check /xllog for [Access] details." xml:space="preserve"><value>Không thể khởi tạo quyền truy cập. Xem chi tiết [Access] trong /xllog.</value></data>
+  <data name="Check installed access" xml:space="preserve"><value>Kiểm tra quyền truy cập đã cài</value></data>
+  <data name="Welcome to DhogNav. Get the full plugin through Discord and install it with Aethertek Plugin Manager (APM)." xml:space="preserve"><value>Chào mừng đến DhogNav. Nhận plugin đầy đủ qua Discord và cài bằng Aethertek Plugin Manager (APM).</value></data>
+  <data name="Visit The Dumpster Fire community for plugin help and discussion." xml:space="preserve"><value>Tham gia cộng đồng The Dumpster Fire để được giúp đỡ và thảo luận về plugin.</value></data>
+  <data name="Get the full plugin on Discord" xml:space="preserve"><value>Nhận plugin đầy đủ trên Discord</value></data>
+  <data name="Copy the direct full-plugin ZIP URL from Discord. Open /apm and trust the publisher. Select DhogNav, then choose Update selected plugin from clipboard." xml:space="preserve"><value>Sao chép URL ZIP trực tiếp của plugin đầy đủ từ Discord. Mở /apm và tin cậy nhà phát hành. Chọn DhogNav, rồi chọn Cập nhật plugin đã chọn từ bộ nhớ tạm.</value></data>
+  <data name="Keep APM enabled until the update finishes. The full plugin replaces this introduction and opens with /dnav." xml:space="preserve"><value>Giữ APM bật đến khi cập nhật xong. Plugin đầy đủ thay thế phần giới thiệu này và mở bằng /dnav.</value></data>
+  <data name="Preparing DhogNav interface fonts..." xml:space="preserve"><value>Đang chuẩn bị phông giao diện DhogNav...</value></data>
+  <data name="DhogNav interface fonts are unavailable. See the Dalamud log." xml:space="preserve"><value>Phông giao diện DhogNav không khả dụng. Xem nhật ký Dalamud.</value></data>
+  <data name="ACCESS" xml:space="preserve"><value>TRUY CẬP</value></data>
+  <data name="Window appearance" xml:space="preserve"><value>Giao diện cửa sổ</value></data>
+  <data name="Compact visible on main window" xml:space="preserve"><value>Hiển thị chế độ gọn trên cửa sổ chính</value></data>
+  <data name="Language visible on main window" xml:space="preserve"><value>Hiển thị lựa chọn ngôn ngữ trên cửa sổ chính</value></data>
+  <data name="Transparency" xml:space="preserve"><value>Độ trong suốt</value></data>
+  <data name="Opacity (%)" xml:space="preserve"><value>Độ đục (%)</value></data>
+  <data name="Auto-fade when unfocused" xml:space="preserve"><value>Tự giảm độ đục khi mất tiêu điểm</value></data>
+  <data name="Unfocused opacity (%)" xml:space="preserve"><value>Độ đục khi mất tiêu điểm (%)</value></data>
+  <data name="Unfocused delay (seconds)" xml:space="preserve"><value>Độ trễ khi mất tiêu điểm (giây)</value></data>
+</root>

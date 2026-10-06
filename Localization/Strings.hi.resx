@@ -1,0 +1,120 @@
+<?xml version='1.0' encoding='utf-8'?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms</value>
+  </resheader>
+  <data name="Pink" xml:space="preserve">
+    <value>गुलाबी</value>
+  </data>
+  <data name="Blue" xml:space="preserve">
+    <value>नीला</value>
+  </data>
+  <data name="Custom RGB" xml:space="preserve">
+    <value>कस्टम RGB</value>
+  </data>
+  <data name="Compact mode" xml:space="preserve">
+    <value>संक्षिप्त मोड</value>
+  </data>
+  <data name="Teal" xml:space="preserve">
+    <value>नीलहरित</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>भाषा</value>
+  </data>
+  <data name="Color" xml:space="preserve">
+    <value>रंग</value>
+  </data>
+  <data name="PUBLIC ACCESS HOST" xml:space="preserve">
+    <value>सार्वजनिक पहुँच होस्ट</value>
+  </data>
+  <data name="Saved locations and navigation" xml:space="preserve">
+    <value>सहेजे स्थान और नेविगेशन</value>
+  </data>
+  <data name="This public plugin provides the introduction and privately granted module access." xml:space="preserve">
+    <value>यह सार्वजनिक प्लगइन परिचय और निजी रूप से दी गई मॉड्यूल पहुँच प्रदान करता है।</value>
+  </data>
+  <data name="JOIN THE COMMUNITY" xml:space="preserve">
+    <value>समुदाय से जुड़ें</value>
+  </data>
+  <data name="Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access." xml:space="preserve">
+    <value>अपडेट, चर्चा और McVaxius से पहुँच के लिए The Dumpster Fire समुदाय देखें। सहायता करने से पहुँच अपने आप नहीं मिलती।</value>
+  </data>
+  <data name="Open Discord" xml:space="preserve">
+    <value>Discord खोलें</value>
+  </data>
+  <data name="Support on Ko-fi" xml:space="preserve">
+    <value>Ko-fi पर सहायता करें</value>
+  </data>
+  <data name="INSTALLATION (APM)" xml:space="preserve">
+    <value>इंस्टॉलेशन (APM)</value>
+  </data>
+  <data name="Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies." xml:space="preserve">
+    <value>अपना सीधा पहुँच ZIP लिंक कॉपी करें। APM में DhogNav शामिल और चालू करें, प्रकाशक पर भरोसा करें, फिर Check clipboard for updates चुनें। एक से अधिक पात्र कॉपी होने पर ही पंक्ति चुनें।</value>
+  </data>
+  <data name="Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav." xml:space="preserve">
+    <value>अपडेट पूरा होने तक DhogNav और APM चालू रखें। सार्वजनिक प्लगइन इंस्टॉल रहता है; DhogNav फिर शुरू करें और /dnav खोलें।</value>
+  </data>
+  <data name="Access could not initialize. Check /xllog for [Access] details." xml:space="preserve">
+    <value>पहुँच शुरू नहीं हो सकी। [Access] विवरण के लिए /xllog देखें।</value>
+  </data>
+  <data name="Check installed access" xml:space="preserve">
+    <value>इंस्टॉल की पहुँच जाँचें</value>
+  </data>
+  <data name="Welcome to DhogNav. Get the full plugin through Discord and install it with Aethertek Plugin Manager (APM)." xml:space="preserve">
+    <value>DhogNav में आपका स्वागत है। पूरा प्लगइन Discord से लें और Aethertek Plugin Manager (APM) से इंस्टॉल करें।</value>
+  </data>
+  <data name="Visit The Dumpster Fire community for plugin help and discussion." xml:space="preserve">
+    <value>प्लगइन सहायता और चर्चा के लिए The Dumpster Fire समुदाय देखें।</value>
+  </data>
+  <data name="Get the full plugin on Discord" xml:space="preserve">
+    <value>पूरा प्लगइन Discord पर लें</value>
+  </data>
+  <data name="Copy the direct full-plugin ZIP URL from Discord. Open /apm and trust the publisher. Select DhogNav, then choose Update selected plugin from clipboard." xml:space="preserve">
+    <value>Discord से पूरे प्लगइन का सीधा ZIP URL कॉपी करें। /apm खोलें और प्रकाशक पर भरोसा करें। DhogNav चुनें, फिर Update selected plugin from clipboard चुनें।</value>
+  </data>
+  <data name="Keep APM enabled until the update finishes. The full plugin replaces this introduction and opens with /dnav." xml:space="preserve">
+    <value>अपडेट पूरा होने तक APM चालू रखें। पूरा प्लगइन इस परिचय की जगह आता है और /dnav से खुलता है।</value>
+  </data>
+  <data name="Preparing DhogNav interface fonts..." xml:space="preserve">
+    <value>DhogNav के इंटरफ़ेस फ़ॉन्ट तैयार हो रहे हैं...</value>
+  </data>
+  <data name="DhogNav interface fonts are unavailable. See the Dalamud log." xml:space="preserve">
+    <value>DhogNav के इंटरफ़ेस फ़ॉन्ट उपलब्ध नहीं हैं। Dalamud लॉग देखें।</value>
+  </data>
+  <data name="ACCESS" xml:space="preserve">
+    <value>पहुँच</value>
+  </data>
+  <data name="Window appearance" xml:space="preserve">
+    <value>विंडो का रूप</value>
+  </data>
+  <data name="Compact visible on main window" xml:space="preserve">
+    <value>मुख्य विंडो पर संक्षिप्त मोड दिखाएँ</value>
+  </data>
+  <data name="Language visible on main window" xml:space="preserve">
+    <value>मुख्य विंडो पर भाषा दिखाएँ</value>
+  </data>
+  <data name="Transparency" xml:space="preserve">
+    <value>पारदर्शिता</value>
+  </data>
+  <data name="Opacity (%)" xml:space="preserve">
+    <value>अपारदर्शिता (%)</value>
+  </data>
+  <data name="Auto-fade when unfocused" xml:space="preserve">
+    <value>फोकस हटने पर अपने आप फीका करें</value>
+  </data>
+  <data name="Unfocused opacity (%)" xml:space="preserve">
+    <value>बिना फोकस की अपारदर्शिता (%)</value>
+  </data>
+  <data name="Unfocused delay (seconds)" xml:space="preserve">
+    <value>बिना फोकस का विलंब (सेकंड)</value>
+  </data>
+</root>

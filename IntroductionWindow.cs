@@ -13,65 +13,67 @@ namespace DhogNav.PublicShell;
 
 internal sealed class IntroductionWindow : Window
 {
+    private readonly AethertekUI.Dalamud.MaterialWindowMotion motion = new();
     private const string DiscordUrl = "https://discord.gg/VsXqydsvpu";
     private const string SupportUrl = "https://ko-fi.com/mcvaxius";
-    private static readonly Vector4 Accent = new(0.65f, 0.57f, 1f, 1f);
+    private readonly PublicUi ui;
+    private readonly AethertekUI.MaterialWindowOpacity opacity = new();
+    private bool openAppearanceSection;
+    internal void OpenSettings() { openAppearanceSection = true; IsOpen = true; }
     private readonly ISharedImmediateTexture icon;
     private readonly ModuleLoader loader;
     private readonly Action refresh;
 
-    public IntroductionWindow(IDalamudPluginInterface pluginInterface, ITextureProvider textures, ModuleLoader loader, Action refresh)
+    public IntroductionWindow(IDalamudPluginInterface pluginInterface, ITextureProvider textures, ModuleLoader loader, Action refresh, PublicUi ui)
         : base($"DhogNav v{BuildInfo.Version}###DhogNav.PublicShell.Introduction")
     {
         this.loader = loader;
         this.refresh = refresh;
-        Size = new Vector2(620, 520);
+        this.ui = ui;
+        Size = new Vector2(620, 700);
         SizeCondition = ImGuiCond.FirstUseEver;
+        Flags |= ImGuiWindowFlags.HorizontalScrollbar;
         SizeConstraints = new WindowSizeConstraints { MinimumSize = new Vector2(360, 380), MaximumSize = new Vector2(float.MaxValue) };
         icon = textures.GetFromFile(Path.Combine(pluginInterface.AssemblyLocation.DirectoryName!, "icon.png"));
     }
 
-    public override void Draw()
+    public override void PreDraw() => motion.Prepare(this, reducedMotion: false, roundedCorners: true);
+    public override void PostDraw()
     {
-        var scale = ImGuiHelpers.GlobalScale;
-        ImGui.PushStyleVar(ImGuiStyleVar.ItemSpacing, new Vector2(12, 6) * scale);
-        ImGui.PushStyleVar(ImGuiStyleVar.ChildRounding, 10 * scale);
-        ImGui.PushStyleVar(ImGuiStyleVar.FrameRounding, 6 * scale);
-        try
-        {
-            if (icon.TryGetWrap(out var texture, out _))
-            {
-                ImGui.Image(texture.Handle, new Vector2(64) * scale);
-                ImGui.SameLine();
-            }
-            ImGui.BeginGroup();
-            ImGui.TextColored(Accent, "D H O G N A V");
-            ImGui.TextUnformatted("By McVaxius");
-            ImGui.TextUnformatted($"Public plugin v{BuildInfo.Version}");
-            ImGui.EndGroup();
-            ImGui.Separator();
-            Card("About", "Saved locations and navigation", "DhogNav helps manage saved locations and optional navigation integration. This free public plugin provides the introduction and supports privately granted module access.");
-            Card("Access", "Join the community", "Visit The Dumpster Fire community on Discord for plugin discussion and to arrange access with McVaxius. Support on Ko-fi is welcome; module access is granted privately.");
-            ImGui.TextColored(Accent, "COMMUNITY AND SUPPORT");
-            if (ImGui.Button("Open Discord")) Util.OpenLink(DiscordUrl);
-            ImGui.SameLine();
-            if (ImGui.Button("Support on Ko-fi")) Util.OpenLink(SupportUrl);
-            ImGui.Separator();
-            ImGui.TextColored(Accent, "INSTALL YOUR ACCESS UPDATE");
-            ImGui.TextWrapped("Copy your direct DhogNav ZIP link. In /apm, add DhogNav to the list, trust the publisher, enable Advanced options, then Ctrl+click the second refresh icon. Keep DhogNav and APM enabled until the update starts and finishes.");
-            ImGui.TextWrapped("The public plugin stays installed. Your module loads when DhogNav restarts; open /dnav to use it.");
-            if (loader.Failed) ImGui.TextColored(new Vector4(1f, 0.65f, 0.25f, 1f), "Access could not initialize. Check /xllog for [Access] details.");
-            if (ImGui.Button("Check installed access")) refresh();
-        }
-        finally { ImGui.PopStyleVar(3); }
+        motion.Restore(this);
+        ui.ApplyWindowOpacity(opacity, WindowName);
     }
 
-    private static void Card(string id, string title, string body)
+    public override void Draw()
     {
-        ImGui.PushID(id);
-        ImGui.TextColored(Accent, title);
-        ImGui.TextWrapped(body);
-        ImGui.Spacing();
-        ImGui.PopID();
+        motion.DrawChrome();
+        var root = ImGui.GetID("");
+        if (icon.TryGetWrap(out var texture, out _))
+        {
+            ImGui.Image(texture.Handle, new Vector2(ui.Compact ? 36 : 48) * ImGuiHelpers.GlobalScale); ImGui.SameLine();
+        }
+        ImGui.BeginGroup(); PublicIntroduction.Header(ui, BuildInfo.Version); ImGui.EndGroup();
+        PublicIntroduction.Card("DhogNav-PublicAbout", root, ui, AethertekUI.MaterialIcon.Globe, "PUBLIC ACCESS HOST", () =>
+        {
+            PublicIntroduction.Brand(ui);
+            ui.Heading("Saved locations and navigation"); ImGui.Separator();
+            AethertekUI.MaterialText.TextWrapped(ui.T("This public plugin provides the introduction and privately granted module access."));
+        });
+        PublicIntroduction.Card("DhogNav-PublicCommunity", root, ui, AethertekUI.MaterialIcon.Group, "JOIN THE COMMUNITY", () =>
+        {
+            AethertekUI.MaterialText.TextWrapped(ui.T("Visit The Dumpster Fire community for updates, discussion and access from McVaxius. Support does not automatically grant access."));
+            var actions = PublicIntroduction.CommunityActions(ui, "Open Discord");
+            if (actions.Discord) Util.OpenLink(DiscordUrl);
+            if (actions.Support) Util.OpenLink(SupportUrl);
+        });
+        PublicIntroduction.Card("DhogNav-PublicAccess", root, ui, AethertekUI.MaterialIcon.Download, ui.Compact ? "INSTALLATION (APM)" : "ACCESS", () =>
+        {
+            AethertekUI.MaterialText.TextWrapped(ui.T("Copy your direct access ZIP link. Include and enable DhogNav in APM, trust the publisher, then choose Check clipboard for updates. Select a row only for duplicate eligible copies."));
+            AethertekUI.MaterialText.TextWrapped(ui.T("Keep DhogNav and APM enabled until the update finishes. The public plugin stays installed; restart DhogNav and open /dnav."));
+            if (loader.Failed) AethertekUI.MaterialText.TextColored(UiStyle.Warning, ui.T("Access could not initialize. Check /xllog for [Access] details."));
+            if (UiStyle.NativeButton("Check installed access", ui.T("Check installed access"), Vector2.Zero)) refresh();
+        });
+        if (openAppearanceSection) { ImGui.SetNextItemOpen(true); openAppearanceSection = false; }
+        if (AethertekUI.MaterialText.CollapsingHeader(ui.T("Window appearance") + "###WindowAppearanceSection")) ui.WindowAppearance();
     }
 }
