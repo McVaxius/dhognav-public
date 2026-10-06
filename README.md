@@ -18,7 +18,7 @@ This repository contains the complete public host source, loader, public trust a
 
 Public release version: `1.3.0.0`. The CLR assembly identity remains `1.0.0.0` for private-module compatibility.
 
-The dependency checkout is pinned to published AethertekUI revision `d00edf3b80fe16357515a9882de3ee4c6f4a2f2b`, which contains the required window opacity and community icon APIs. When adopting a newer library API, update this existing ref after that library revision is published.
+The dependency checkout is pinned to published AethertekUI revision `6c193cf06ac67f954c549cafc2033ac0efdd630a`, which contains the required Hindi text renderer/host, window opacity and community icon APIs. When adopting a newer library API, update this existing ref after that library revision is published.
 
 ## Ownership
 
