@@ -22,6 +22,7 @@
   <ItemGroup>
     <Compile Include="Plugin.cs" />
     <Compile Include="IntroductionWindow.cs;IModule.cs;ModuleLoader.cs;ModulePackage.cs;BuildInfo.cs;TrustAnchor.cs;PrivateManifest.cs" />
+    <Compile Include="RuntimeDependencyPolicy.cs" Link="RuntimeDependencyPolicy.cs" />
     <Compile Include="ManagedUiFonts.cs;UiStyle.cs;PublicUi.cs;PublicPreferences.cs;PublicIntroduction.cs" />
     <ProjectReference Include="../aethertekUI/src/AethertekUI/AethertekUI.csproj" />
     <ProjectReference Include="../aethertekUI/src/AethertekUI.Dalamud/AethertekUI.Dalamud.csproj" />
