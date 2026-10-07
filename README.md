@@ -2,6 +2,34 @@
 
 DhogNav is a FINAL FANTASY XIV plugin by McVaxius. The free public plugin provides an introduction and loads modules whose access is granted privately by the owner. Open it with `/dnav`.
 
+## Dalamud Release requirement
+
+The public host checks the running Dalamud `BetaTrack` once when the plugin
+instance is created. Only `release` (ignoring case and surrounding whitespace)
+allows normal access loading. Staging, dev, `apiNN` previews, unknown/blank tracks
+and detection errors keep the public shell enabled and immediately show only:
+
+> You are not on Dalamud Release
+
+Commands and Open Main/Config reopen that error window. Refresh returns false
+without loading private code; access validation raises that explicit error before
+processing package bytes. Directory/Validate/Refresh IPC providers remain
+registered. The startup log records the captured track and diagnostic details;
+callbacks reuse the decision without checking again or logging every frame.
+Reloading the host makes one new check. Changing the running Dalamud branch
+requires restarting the game.
+
+Release eligibility does not replace signature, manifest, ABI or exact dependency
+checks. Delivering this guard requires a public-host update; private build and
+package processes are unaffected.
+Developer hosts that link this source retain their existing behavior through the
+existing `LOCAL_DEV_BUILD` compile flag.
+
+Run `dotnet run --project tests/ReleaseGuard/ReleaseGuard.csproj -c Release`
+for source-linked lifecycle tests with synthetic Dalamud/UI/package services.
+They cover host behavior, not protected packaging or live Dalamud/APM acceptance.
+Pass `-p:ReleaseGuardLocalDev=true` to check the shared developer-host path.
+
 ## Community and access
 
 Join [The Dumpster Fire community on Discord](https://discord.gg/ac6gjDvR8R) for discussion and access arrangements. You can also [support McVaxius on Ko-fi](https://ko-fi.com/mcvaxius). Support does not automatically grant module access.
