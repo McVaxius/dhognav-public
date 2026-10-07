@@ -40,16 +40,17 @@ internal sealed class ManagedUiFonts : IDisposable
         glyphError = null; checkedGeneration = -1;
         handles = UiStyle.FontSizes.Select((pointSize, index) => atlas.NewDelegateFontHandle(step => step.OnPreBuild(build =>
         {
+            build.NewImAtlas.TexDesiredWidth = 4096;
+            build.NewImAtlas.TexDesiredHeight = 4096;
             var size = pointSize * 4 / 3;
             build.Font = build.AddFontFromFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), UiStyle.FontFiles[index]),
                 new SafeFontConfig { SizePx = size, GlyphRanges = ranges });
             build.AddFontFromFile(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Fonts), "seguisym.ttf"),
                 new SafeFontConfig { SizePx = size, MergeFont = build.Font, GlyphRanges = ranges });
-            // Verified bundled TTC: JP=0, KR=1, SC=2, TC=3. Selected face owns shared ideographs.
-            foreach (var locale in new[] { "ja", "ko", "zh-Hans", "zh-Hant" }.OrderBy(code => code == selected ? 0 : 1))
-                build.AddDalamudAssetFont(DalamudAsset.NotoSansCjkRegular,
-                    new SafeFontConfig { SizePx = size, MergeFont = build.Font, GlyphRanges = ranges,
-                        FontNo = locale switch { "ko" => 1, "zh-Hans" => 2, "zh-Hant" => 3, _ => 0 } });
+            // Verified bundled TTC faces: JP=0, KR=1, SC=2, TC=3.
+            build.AddDalamudAssetFont(DalamudAsset.NotoSansCjkRegular,
+                new SafeFontConfig { SizePx = size, MergeFont = build.Font, GlyphRanges = ranges,
+                    FontNo = selected switch { "ko" => 1, "zh-Hans" or "zh-CN" => 2, "zh-Hant" or "zh-TW" => 3, _ => 0 } });
             build.AttachExtraGlyphsForDalamudLanguage(new SafeFontConfig { SizePx = size, MergeFont = build.Font });
             build.AddGameSymbol(new SafeFontConfig { SizePx = size, MergeFont = build.Font });
         }))).ToArray();

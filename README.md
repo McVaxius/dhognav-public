@@ -4,7 +4,7 @@ DhogNav is a FINAL FANTASY XIV plugin by McVaxius. The free public plugin provid
 
 ## Community and access
 
-Join [The Dumpster Fire community on Discord](https://discord.gg/VsXqydsvpu) for discussion and access arrangements. You can also [support McVaxius on Ko-fi](https://ko-fi.com/mcvaxius). Support does not automatically grant module access.
+Join [The Dumpster Fire community on Discord](https://discord.gg/ac6gjDvR8R) for discussion and access arrangements. You can also [support McVaxius on Ko-fi](https://ko-fi.com/mcvaxius). Support does not automatically grant module access.
 
 Keep the updated public DhogNav host installed and enabled. In `/apm`, include `DhogNav` in the plugin list and confirm publisher trust. Copy the direct private ZIP link and click APM's global **Check clipboard for updates** button. The package contains `DhogNav.Access.dll` and `DhogNav.json`; APM places both in the host's `tasks` directory.
 

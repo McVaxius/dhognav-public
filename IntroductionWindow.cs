@@ -1,7 +1,9 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface;
 using Dalamud.Interface.Textures;
 using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
@@ -14,7 +16,7 @@ namespace DhogNav.PublicShell;
 internal sealed class IntroductionWindow : Window
 {
     private readonly AethertekUI.Dalamud.MaterialWindowMotion motion = new();
-    private const string DiscordUrl = "https://discord.gg/VsXqydsvpu";
+    private const string DiscordUrl = "https://discord.gg/ac6gjDvR8R";
     private const string SupportUrl = "https://ko-fi.com/mcvaxius";
     private readonly PublicUi ui;
     private readonly AethertekUI.MaterialWindowOpacity opacity = new();
@@ -35,9 +37,38 @@ internal sealed class IntroductionWindow : Window
         Flags |= ImGuiWindowFlags.HorizontalScrollbar;
         SizeConstraints = new WindowSizeConstraints { MinimumSize = new Vector2(360, 380), MaximumSize = new Vector2(float.MaxValue) };
         icon = textures.GetFromFile(Path.Combine(pluginInterface.AssemblyLocation.DirectoryName!, "icon.png"));
+        TitleBarButtons.Add(new()
+        {
+            Icon = FontAwesomeIcon.Cog, Priority = 0, IconOffset = new(2, 1),
+            Click = button => { if (button == ImGuiMouseButton.Left) OpenSettings(); },
+            ShowTooltip = () => AethertekUI.MaterialText.SetTooltip(ui.T("Window appearance")),
+        });
+        TitleBarButtons.Add(new()
+        {
+            Icon = FontAwesomeIcon.Search, Priority = -10, IconOffset = new(2, 1),
+            Click = button => { if (button == ImGuiMouseButton.Left) refresh(); },
+            ShowTooltip = () => AethertekUI.MaterialText.SetTooltip(ui.T("Check installed access")
+                + (loader.Failed ? "\n" + ui.T("Access could not initialize. Check /xllog for [Access] details.") : "")),
+        });
     }
 
-    public override void PreDraw() => motion.Prepare(this, reducedMotion: false, roundedCorners: true);
+    public override void PreDraw()
+    {
+        if (openAppearanceSection) ImGui.SetNextWindowCollapsed(false, ImGuiCond.Always);
+        var style = ImGui.GetStyle();
+        var fontSize = ImGui.GetFontSize();
+        var count = TitleBarButtons.Count(button => !IsClickthrough || button.AvailableClickthrough);
+        if (AllowPinning || AllowClickthrough || AllowBackgroundBlur) count++;
+        var collapse = (Flags & (ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.Modal)) == 0
+            && style.WindowMenuButtonPosition != ImGuiDir.None;
+        var controls = (count + (ShowCloseButton ? 1 : 0) + (collapse ? 1 : 0)) * (fontSize + style.ItemInnerSpacing.X);
+        var required = (AethertekUI.MaterialText.Measure($"DhogNav v{BuildInfo.Version}").X
+            + controls + style.FramePadding.X * 2 + style.ItemInnerSpacing.X) / ImGui.GetIO().FontGlobalScale;
+        var bounds = SizeConstraints ?? new WindowSizeConstraints();
+        bounds.MinimumSize = new(Math.Max(360, required), bounds.MinimumSize.Y);
+        SizeConstraints = bounds;
+        motion.Prepare(this, reducedMotion: false, roundedCorners: true);
+    }
     public override void PostDraw()
     {
         motion.Restore(this);
