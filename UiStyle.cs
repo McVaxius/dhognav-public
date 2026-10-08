@@ -1,6 +1,8 @@
 using System.Numerics;
 using AethertekUI;
 using Dalamud.Bindings.ImGui;
+using Dalamud.Interface.Textures;
+using Dalamud.Interface.Windowing;
 
 #if DHOGNAV_PRIVATE_UI
 namespace DhogNav.PrivateUi;
@@ -14,6 +16,19 @@ internal static class UiStyle
 {
     internal static readonly float[] FontSizes = [11, 12, 24, 10, 9, 13, 11, 21];
     internal static readonly string[] FontFiles = ["segoeui.ttf", "seguisb.ttf", "segoeuib.ttf", "segoeui.ttf", "segoeui.ttf", "seguisb.ttf", "seguisb.ttf", "segoeuib.ttf"];
+    internal static void PaintTitleImage(Window owner, string visibleTitle, ISharedImmediateTexture icon)
+    {
+        var native = ImGuiP.FindWindowByName(owner.WindowName);
+        if (native.IsNull) return;
+        ImTextureID image = default;
+        var imageSize = Vector2.One;
+        if (icon.TryGetWrap(out var texture, out _))
+        { image = texture.Handle; imageSize = new(texture.Width, texture.Height); }
+        var count = owner.TitleBarButtons.Count(button => !owner.IsClickthrough || button.AvailableClickthrough);
+        if (owner.AllowPinning || owner.AllowClickthrough || owner.AllowBackgroundBlur) count++;
+        MaterialWindowHeader.PaintTitle(native, visibleTitle, image, imageSize,
+            count * (ImGuiP.CalcFontSize(native) + ImGui.GetStyle().ItemInnerSpacing.X), owner.ShowCloseButton);
+    }
     internal static bool Compact { get; set; }
     internal static float Padding => Compact ? 10 : 14;
     internal static float Gap => Compact ? 10 : 14;

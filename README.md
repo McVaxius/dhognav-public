@@ -40,6 +40,22 @@ The public host provides the access directory, validation and refresh IPC endpoi
 
 The introduction groups access information, community links and APM installation steps into three cards. Color, Language and **C** select the whole-window theme, language and compact spacing. The interface supports English, German, French, Spanish, Italian, Russian, Japanese, Korean, Simplified Chinese, Vietnamese, Brazilian Portuguese, Indonesian, Polish, Turkish and Hindi. Preferences share the existing version-1 configuration and preserve private settings. **Check installed access** keeps the existing access refresh action. Hindi captions and editor text use scoped Windows text shaping while retaining the existing native font roles and symbols. Current Debug/x64 source builds and offline Hindi window, control and save-path checks pass. Managed-font readiness, GPU rendering and game acceptance remain pending.
 
+Window appearance retains colour, language and compact access when their Main
+shortcuts are hidden. Transparency defaults to 100% opacity and fades to 50%
+after ten unfocused seconds; settings retain both opacity values and the delay.
+The titlebar keeps appearance and installed-access shortcuts. Main branding and
+its expanded/collapsed title use the packaged icon, with the image space retained
+while its texture loads. There is no public Mini window. Navigation, filters and
+command enable switches belong to the separately authenticated module;
+refreshing access does not start a navigation command. Image changes still
+require game/GPU acceptance.
+
+Hindi text uses native Windows font fallback. An unavailable menu caption becomes
+a disabled **Hindi (unavailable)** choice without blocking other languages.
+A failed saved Hindi selection shows an ASCII status and **Use English** through
+existing preference saving; the saved language changes only on that action.
+The public Release build passes; native/game acceptance of font recovery remains pending.
+
 ## Build
 
 This repository contains the complete public host source, loader, public trust anchor and manifest validation. It builds without private source or files from `!cryptography`. Keep the `aethertekUI` checkout beside this repository. With .NET SDK 10.0.201 and Dalamud API 15 references available, run `dotnet build DhogNav.csproj -c Release -p:Platform=x64`. The eight-file public package includes `AethertekUI.dll` and `AethertekUI.Dalamud.dll` and is written to `bin/x64/Release/DhogNav/latest.zip`; `Z:\dnavp.bat` also copies it to this repository's `latest.zip`. GitHub Actions checks out the sibling UI repository using the read-only `AETHERTEKUI_DEPLOY_KEY` secret.

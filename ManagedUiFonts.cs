@@ -23,6 +23,7 @@ internal sealed class ManagedUiFonts : IDisposable
     private int generation;
     private int checkedGeneration = -1;
     private Exception? glyphError;
+    internal bool HindiAvailable { get; private set; }
     internal ManagedUiFonts(IUiBuilder builder, string label) => atlas = builder.CreateFontAtlas(FontAtlasAutoRebuildMode.Async, true, label);
     internal Exception? Error => glyphError ?? handles.FirstOrDefault(h => h.LoadException != null)?.LoadException;
     internal void Invalidate() => language = "";
@@ -32,12 +33,13 @@ internal sealed class ManagedUiFonts : IDisposable
         using var suppress = atlas.SuppressAutoRebuild();
         foreach (var handle in handles) { handle.ImFontChanged -= Changed; handle.Dispose(); }
         language = selected;
-        required = strings.Concat(["English", "Deutsch", "Français", "Español", "Italiano", "Русский", "日本語", "한국어", "简体中文", "繁體中文", "Português (Brasil)", "Tiếng Việt", "Bahasa Indonesia", "Polski", "Türkçe", "हिन्दी", "♡", "—", "…"]).Distinct().ToArray();
+        required = strings.Concat(["English", "Deutsch", "Français", "Español", "Italiano", "Русский", "日本語", "한국어", "简体中文", "繁體中文", "Português (Brasil)", "Tiếng Việt", "Bahasa Indonesia", "Polski", "Türkçe", "Hindi (unavailable)", "♡", "—", "…"]).Distinct().ToArray();
         var ranges = required.SelectMany(text => MaterialText.NativeGlyphText(text).EnumerateRunes())
             .Where(rune => rune.Value <= ushort.MaxValue && !Rune.IsControl(rune)).Select(rune => (char)rune.Value)
             .Concat(Enumerable.Range(0x20, 0x250 - 0x20).Select(i => (char)i))
             .Concat(Enumerable.Range(0x400, 0x130).Select(i => (char)i)).ToGlyphRange();
         glyphError = null; checkedGeneration = -1;
+        HindiAvailable = false;
         handles = UiStyle.FontSizes.Select((pointSize, index) => atlas.NewDelegateFontHandle(step => step.OnPreBuild(build =>
         {
             build.NewImAtlas.TexDesiredWidth = 4096;
@@ -64,6 +66,9 @@ internal sealed class ManagedUiFonts : IDisposable
         if (current == checkedGeneration) return true;
         try
         {
+            var renderer = ShapedText;
+            HindiAvailable = renderer is not null && UiStyle.FontSizes.All(size =>
+                renderer.TryCheckGlyphs(["हिन्दी"], size * 4 / 3 * ImGui.GetIO().FontGlobalScale, out _));
             for (var index = 0; index < handles.Length; index++)
             {
                 ShapedText?.CheckGlyphs(required, UiStyle.FontSizes[index]*4/3*ImGui.GetIO().FontGlobalScale);
@@ -82,7 +87,8 @@ internal sealed class ManagedUiFonts : IDisposable
         if (!Ready()) throw new InvalidOperationException("DhogNav UI fonts are not ready.", Error);
         return handles[(int)role].Push();
     }
-    internal static unsafe void DrawStatus(bool loading, string translated)
+    internal static void DrawStatus(bool loading, string translated) => DrawStatusWithRecovery(loading, translated, null);
+    internal static unsafe void DrawStatusWithRecovery(bool loading, string translated, Action? useEnglish)
     {
         // Before managed fonts are ready, paint only glyphs present in the host font.
         var covered = MaterialText.NativeGlyphText(translated).EnumerateRunes().Where(rune => !Rune.IsControl(rune)).All(rune => rune.Value<=ushort.MaxValue && ImGui.FindGlyphNoFallback(ImGui.GetFont(), (ushort)rune.Value).Handle != null);
@@ -92,6 +98,7 @@ internal sealed class ManagedUiFonts : IDisposable
         {
             statusDecorations.Paint();
             MaterialText.TextWrapped(covered ? translated : loading ? "Preparing DhogNav interface fonts..." : "DhogNav interface fonts are unavailable. See the Dalamud log.");
+            if (useEnglish is not null && ImGui.Button("Use English")) useEnglish();
         }
         ImGui.End();
         statusDecorations.Paint();

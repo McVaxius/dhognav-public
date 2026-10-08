@@ -51,7 +51,7 @@ internal sealed class PublicUi : IDisposable
         var language = sets.ContainsKey(preferences.Language) ? preferences.Language : "en";
         current = sets[language];
         fonts.Prepare(language, current.Cast<DictionaryEntry>().Select(e => (string)e.Value!)
-            .Concat(sets["en"].Cast<DictionaryEntry>().Select(e => (string)e.Value!)).Concat(Languages.Select(l => l.Name)));
+            .Concat(sets["en"].Cast<DictionaryEntry>().Select(e => (string)e.Value!)).Concat(Languages.Where(l => l.Code != "hi").Select(l => l.Name)));
         UiStyle.Compact = frameCompact = preferences.Compact;
         var selected = preferences.Accent & 0xFFFFFF;
         if (theme == null || accent != selected) { accent = selected; theme = UiStyle.Theme(selected, true); }
@@ -61,7 +61,11 @@ internal sealed class PublicUi : IDisposable
         if (!fonts.Ready())
         {
             if (!loggedFontIssue && fonts.Error is { } error) { report(error); loggedFontIssue = true; }
-            ManagedUiFonts.DrawStatus(fonts.Error == null, T(fonts.Error == null ? "Preparing DhogNav interface fonts..." : "DhogNav interface fonts are unavailable. See the Dalamud log."));
+            var hindiFailed = language == "hi" && fonts.Error is not null;
+            ManagedUiFonts.DrawStatusWithRecovery(fonts.Error == null, language == "hi"
+                ? hindiFailed ? "Hindi is unavailable. Use English to recover; your saved language is unchanged." : "Preparing DhogNav interface fonts..."
+                : T(fonts.Error == null ? "Preparing DhogNav interface fonts..." : "DhogNav interface fonts are unavailable. See the Dalamud log."),
+                hindiFailed ? () => { preferences.Language = "en"; preferences.Save(); } : null);
             ApplyWindowOpacity(fontStatusOpacity, "DhogNav##FontStatus"); return;
         }
         using var geometry = UiStyle.Geometry(ImGui.GetIO().FontGlobalScale);
@@ -87,7 +91,8 @@ internal sealed class PublicUi : IDisposable
         { draftAccent = preferences.Accent; var rgb = UiStyle.Rgb(draftAccent); accentDraft = new(rgb.X, rgb.Y, rgb.Z); }
         var language = preferences.Language;
         using var action = Font(UiFontRole.Action);
-        var options = new MaterialOptions<string>(Languages.Select(l => new MaterialOption<string>(l.Code, l.Code, l.Name)).ToArray());
+        var options = new MaterialOptions<string>(Languages.Select(l => new MaterialOption<string>(l.Code, l.Code,
+            l.Code == "hi" && !fonts.HindiAvailable ? "Hindi (unavailable)" : l.Name, l.Code == "hi" && !fonts.HindiAvailable)).ToArray());
         var accentChanged = false;
         var languageChanged = false;
         if (!header)

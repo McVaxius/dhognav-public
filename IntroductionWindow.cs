@@ -63,7 +63,8 @@ internal sealed class IntroductionWindow : Window
             && style.WindowMenuButtonPosition != ImGuiDir.None;
         var controls = (count + (ShowCloseButton ? 1 : 0) + (collapse ? 1 : 0)) * (fontSize + style.ItemInnerSpacing.X);
         var required = (AethertekUI.MaterialText.Measure($"DhogNav v{BuildInfo.Version}").X
-            + controls + style.FramePadding.X * 2 + style.ItemInnerSpacing.X) / ImGui.GetIO().FontGlobalScale;
+            + controls + style.FramePadding.X * 2 + style.ItemInnerSpacing.X
+            + fontSize + style.ItemInnerSpacing.X) / ImGui.GetIO().FontGlobalScale;
         var bounds = SizeConstraints ?? new WindowSizeConstraints();
         bounds.MinimumSize = new(Math.Max(360, required), bounds.MinimumSize.Y);
         SizeConstraints = bounds;
@@ -72,6 +73,7 @@ internal sealed class IntroductionWindow : Window
     public override void PostDraw()
     {
         motion.Restore(this);
+        UiStyle.PaintTitleImage(this, $"DhogNav v{BuildInfo.Version}", icon);
         ui.ApplyWindowOpacity(opacity, WindowName);
     }
 
@@ -79,10 +81,11 @@ internal sealed class IntroductionWindow : Window
     {
         motion.DrawChrome();
         var root = ImGui.GetID("");
+        var iconMin = ImGui.GetCursorScreenPos();
+        var iconSize = new Vector2(ui.Compact ? 36 : 48) * ImGuiHelpers.GlobalScale;
         if (icon.TryGetWrap(out var texture, out _))
-        {
-            ImGui.Image(texture.Handle, new Vector2(ui.Compact ? 36 : 48) * ImGuiHelpers.GlobalScale); ImGui.SameLine();
-        }
+            AethertekUI.MaterialCanvas.DrawImage(ImGui.GetWindowDrawList(), texture.Handle, new(texture.Width, texture.Height), iconMin, iconMin + iconSize);
+        ImGui.Dummy(iconSize); ImGui.SameLine();
         ImGui.BeginGroup(); PublicIntroduction.Header(ui, BuildInfo.Version); ImGui.EndGroup();
         PublicIntroduction.Card("DhogNav-PublicAbout", root, ui, AethertekUI.MaterialIcon.Globe, "PUBLIC ACCESS HOST", () =>
         {
