@@ -15,6 +15,9 @@ namespace DhogNav.PublicShell;
 
 internal sealed class IntroductionWindow : Window
 {
+    private readonly AethertekUI.Dalamud.MaterialSupportLog supportLog = new();
+    private readonly IDalamudPluginInterface supportPluginInterface;
+    private readonly ICommandManager supportCommands;
     private readonly AethertekUI.Dalamud.MaterialWindowMotion motion = new();
     private const string DiscordUrl = "https://discord.gg/ac6gjDvR8R";
     private const string SupportUrl = "https://ko-fi.com/mcvaxius";
@@ -26,9 +29,11 @@ internal sealed class IntroductionWindow : Window
     private readonly ModuleLoader loader;
     private readonly Action refresh;
 
-    public IntroductionWindow(IDalamudPluginInterface pluginInterface, ITextureProvider textures, ModuleLoader loader, Action refresh, PublicUi ui)
+    public IntroductionWindow(IDalamudPluginInterface pluginInterface, ITextureProvider textures, ModuleLoader loader, Action refresh, PublicUi ui, ICommandManager supportCommands)
         : base($"DhogNav v{BuildInfo.Version}###DhogNav.PublicShell.Introduction")
     {
+        supportPluginInterface = pluginInterface;
+        this.supportCommands = supportCommands;
         this.loader = loader;
         this.refresh = refresh;
         this.ui = ui;
@@ -99,6 +104,8 @@ internal sealed class IntroductionWindow : Window
             var actions = PublicIntroduction.CommunityActions(ui, "Open Discord");
             if (actions.Discord) Util.OpenLink(DiscordUrl);
             if (actions.Support) Util.OpenLink(SupportUrl);
+            supportLog.Draw(supportPluginInterface, key => ui.T(key),
+                path => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName = path, UseShellExecute = true }), ex => Plugin.Log?.Error(ex, "Dalamud log export failed."), supportCommands);
         });
         PublicIntroduction.Card("DhogNav-PublicAccess", root, ui, AethertekUI.MaterialIcon.Download, ui.Compact ? "INSTALLATION (APM)" : "ACCESS", () =>
         {

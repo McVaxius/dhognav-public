@@ -37,7 +37,7 @@ public sealed class Plugin : IDalamudPlugin
             if (release.Allowed)
             {
                 presentation = new PublicUi(pluginInterface, textures);
-                introduction = new IntroductionWindow(pluginInterface, textures, loader, RefreshAccess, presentation);
+                introduction = new IntroductionWindow(pluginInterface, textures, loader, RefreshAccess, presentation, commands);
                 publicWindow = introduction;
             }
             else publicWindow = new ReleaseRequiredWindow();

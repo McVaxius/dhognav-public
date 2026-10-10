@@ -67,3 +67,9 @@ The dependency checkout follows published AethertekUI main so compatible API add
 ## Ownership
 
 DhogNav is proprietary software. The public plugin is free to use; private module access and redistribution require authorization from McVaxius. See [LICENSE](LICENSE).
+
+## Support logs
+
+Use **Copy / ZIP Dalamud log** in the introduction window’s community card to create a local ZIP and open its folder. At 100 MiB or above, the first click warns that logging may have stopped and recent activity may be missing; click **Export capped log anyway** only if you still want that snapshot. Share the ZIP manually and remove exports when no longer needed. **Open Export Folder** reopens the completed export’s folder.
+
+When XA Slave is loaded, **Open XA Slave log tools** opens its **Utility > XA Mods** panel, which contains Dalamud Log Cleaner. The existing **Copy / ZIP Dalamud log** action remains separate. Opening the panel does not run cleanup or change XA Slave settings.
