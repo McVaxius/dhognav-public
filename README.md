@@ -1,5 +1,7 @@
 # DhogNav
 
+Compact mode is enabled once on upgrade. Main Compact and Transparency shortcuts start hidden; Window appearance can restore either shortcut independently and change density or opacity. Later loads retain those choices and unrelated settings.
+
 DhogNav is a FINAL FANTASY XIV plugin by McVaxius. The free public plugin provides an introduction and loads modules whose access is granted privately by the owner. Open it with `/dnav`.
 
 ## Dalamud Release requirement
@@ -60,7 +62,7 @@ The public Release build passes; native/game acceptance of font recovery remains
 
 This repository contains the complete public host source, loader, public trust anchor and manifest validation. It builds without private source or files from `!cryptography`. Keep the `aethertekUI` checkout beside this repository. With .NET SDK 10.0.201 and Dalamud API 15 references available, run `dotnet build DhogNav.csproj -c Release -p:Platform=x64`. The eight-file public package includes `AethertekUI.dll` and `AethertekUI.Dalamud.dll` and is written to `bin/x64/Release/DhogNav/latest.zip`; `Z:\dnavp.bat` also copies it to this repository's `latest.zip`. GitHub Actions checks out the sibling UI repository using the read-only `AETHERTEKUI_DEPLOY_KEY` secret.
 
-Public release version: `1.3.0.0`. The CLR assembly identity remains `1.0.0.0` for private-module compatibility.
+Public release version: `2.0.0.6`. The CLR assembly identity remains `1.0.0.0` for private-module compatibility.
 
 The dependency checkout follows published AethertekUI main so compatible API additions are available without per-plugin pin updates. Publish shared library APIs before consumer changes. Authentication uses the repository-specific read-only SSH deploy key, which has no expiration; checkout does not persist credentials.
 

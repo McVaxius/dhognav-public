@@ -9,9 +9,11 @@ internal sealed class PublicPreferences
     private readonly string path;
     private DateTime observedWrite = DateTime.MinValue;
     internal uint Accent { get; set; } = 0xA475FF;
-    internal bool Compact { get; set; }
+    internal bool Compact { get; set; } = true;
     internal string Language { get; set; } = "en";
-    internal bool UiCompactVisibleOnMainWindow { get; set; } = true;
+    internal bool UiCompactVisibleOnMainWindow { get; set; }
+    internal bool UiTransparencyVisibleOnMainWindow { get; set; }
+    private bool loaded;
     internal bool UiLanguageVisibleOnMainWindow { get; set; } = true;
     internal bool UiTransparencyEnabled { get; set; } = true;
     internal int UiWindowOpacityPercent { get; set; } = 100;
@@ -19,20 +21,27 @@ internal sealed class PublicPreferences
     internal int UiFadedOpacityPercent { get; set; } = 50;
     internal float UiUnfocusedDelaySeconds { get; set; } = 10;
     internal PublicPreferences(IDalamudPluginInterface pi) { path = pi.ConfigFile.FullName; Reload(); }
-    private JsonObject Read() => File.Exists(path)
-        ? JsonNode.Parse(File.ReadAllText(path), documentOptions: new() { AllowTrailingCommas = true, CommentHandling = System.Text.Json.JsonCommentHandling.Skip }) as JsonObject
-            ?? throw new InvalidDataException("DhogNav configuration must be an object.")
-        : new JsonObject { ["Version"] = 1, ["Payload"] = new JsonObject() };
+    private JsonObject Read()
+    {
+        var root = File.Exists(path)
+            ? JsonNode.Parse(File.ReadAllText(path), documentOptions: new() { AllowTrailingCommas = true, CommentHandling = System.Text.Json.JsonCommentHandling.Skip }) as JsonObject
+                ?? throw new InvalidDataException("DhogNav configuration must be an object.")
+            : new JsonObject { ["Version"] = 1, ["Payload"] = new JsonObject() };
+        if (root.TryGetPropertyValue("Payload", out var payload) && payload is not JsonObject)
+            throw new InvalidDataException("DhogNav configuration Payload must be an object; the existing file was preserved.");
+        return root;
+    }
     internal void Reload()
     {
         var written = File.Exists(path) ? File.GetLastWriteTimeUtc(path) : DateTime.MinValue;
-        if (written == observedWrite) return;
+        if (loaded && written == observedWrite) return;
         var root = Read();
         var payload = root["Payload"] as JsonObject;
         Accent = payload?["UiAccentRgb"]?.GetValue<uint>() ?? 0xA475FF;
-        Compact = payload?["UiCompact"]?.GetValue<bool>() ?? false;
+        Compact = payload?["UiCompact"]?.GetValue<bool>() ?? true;
         Language = payload?["UiLanguage"]?.GetValue<string>() ?? "en";
-        UiCompactVisibleOnMainWindow = payload?["UiCompactVisibleOnMainWindow"]?.GetValue<bool>() ?? true;
+        UiCompactVisibleOnMainWindow = payload?["UiCompactVisibleOnMainWindow"]?.GetValue<bool>() ?? false;
+        UiTransparencyVisibleOnMainWindow = payload?["UiTransparencyVisibleOnMainWindow"]?.GetValue<bool>() ?? false;
         UiLanguageVisibleOnMainWindow = payload?["UiLanguageVisibleOnMainWindow"]?.GetValue<bool>() ?? true;
         UiTransparencyEnabled = payload?["UiTransparencyEnabled"]?.GetValue<bool>() ?? true;
         UiWindowOpacityPercent = payload?["UiWindowOpacityPercent"]?.GetValue<int>() ?? 100;
@@ -40,6 +49,9 @@ internal sealed class PublicPreferences
         UiFadedOpacityPercent = payload?["UiFadedOpacityPercent"]?.GetValue<int>() ?? 50;
         UiUnfocusedDelaySeconds = payload?["UiUnfocusedDelaySeconds"]?.GetValue<float>() ?? 10;
         observedWrite = written;
+        loaded = true;
+        if (payload?["UiCompactDefaultsApplied"]?.GetValue<bool>() != true)
+        { Compact = true; UiCompactVisibleOnMainWindow = UiTransparencyVisibleOnMainWindow = false; Save(); }
     }
     internal void Save()
     {
@@ -48,6 +60,8 @@ internal sealed class PublicPreferences
         if (payload == null) { payload = new JsonObject(); root["Payload"] = payload; }
         payload["UiAccentRgb"] = Accent; payload["UiCompact"] = Compact; payload["UiLanguage"] = Language;
         payload["UiCompactVisibleOnMainWindow"] = UiCompactVisibleOnMainWindow;
+        payload["UiTransparencyVisibleOnMainWindow"] = UiTransparencyVisibleOnMainWindow;
+        payload["UiCompactDefaultsApplied"] = true;
         payload["UiLanguageVisibleOnMainWindow"] = UiLanguageVisibleOnMainWindow;
         payload["UiTransparencyEnabled"] = UiTransparencyEnabled;
         payload["UiWindowOpacityPercent"] = UiWindowOpacityPercent;

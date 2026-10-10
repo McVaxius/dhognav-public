@@ -83,7 +83,7 @@ internal sealed class PublicUi : IDisposable
         var compactWidth = ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure("C").X;
         return (preferences.UiLanguageVisibleOnMainWindow ? languageWidth + ImGui.GetStyle().ItemSpacing.X : 0)
             + (preferences.UiCompactVisibleOnMainWindow ? compactWidth + ImGui.GetStyle().ItemSpacing.X : 0)
-            + ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure(T("Transparency")).X;
+            + (preferences.UiTransparencyVisibleOnMainWindow ? ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure(T("Transparency")).X : 0);
     }
     internal void Appearance(bool header = false)
     {
@@ -114,7 +114,7 @@ internal sealed class PublicUi : IDisposable
             if (ImGui.Checkbox("C##DhogNav-public-compact", ref compact)) { preferences.Compact = compact; preferences.Save(); }
             if (ImGui.IsItemHovered()) MaterialText.SetTooltip(T("Compact mode"));
         }
-        if (header)
+        if (header && preferences.UiTransparencyVisibleOnMainWindow)
         {
             var edge = ImGuiP.GetCurrentWindow().InnerClipRect.Max.X;
             var width = ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure(T("Transparency")).X;
@@ -137,6 +137,9 @@ internal sealed class PublicUi : IDisposable
         var compactVisibleOnMainWindow = preferences.UiCompactVisibleOnMainWindow;
         if (Checkbox(T("Compact visible on main window") + "###UiCompactVisibleOnMainWindowSettings", ref compactVisibleOnMainWindow))
         { preferences.UiCompactVisibleOnMainWindow = compactVisibleOnMainWindow; changed = true; }
+        var transparencyVisibleOnMainWindow = preferences.UiTransparencyVisibleOnMainWindow;
+        if (Checkbox(T("Transparency visible on main window") + "###UiTransparencyVisibleOnMainWindowSettings", ref transparencyVisibleOnMainWindow))
+        { preferences.UiTransparencyVisibleOnMainWindow = transparencyVisibleOnMainWindow; changed = true; }
         var languageVisibleOnMainWindow = preferences.UiLanguageVisibleOnMainWindow;
         if (Checkbox(T("Language visible on main window") + "###UiLanguageVisibleOnMainWindowSettings", ref languageVisibleOnMainWindow))
         { preferences.UiLanguageVisibleOnMainWindow = languageVisibleOnMainWindow; changed = true; }
