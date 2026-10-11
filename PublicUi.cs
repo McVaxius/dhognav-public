@@ -72,20 +72,34 @@ internal sealed class PublicUi : IDisposable
         using var body = fonts.Push(UiFontRole.Body);
         draw();
     }
-    internal float AppearanceWidth()
+
+    internal AethertekUI.Dalamud.MaterialAppearanceTitleBar RegisterTitleBar(Dalamud.Interface.Windowing.Window owner)
+        => AethertekUI.Dalamud.MaterialAppearanceTitleBar.Register(owner,
+            () => new(T("Language"), T("Compact mode"), T("Transparency"), T("Color")),
+            DrawTitleLanguage, () => { preferences.Compact = !preferences.Compact; preferences.Save(); }, WindowAppearance, DrawTitleColour,
+            () => new(preferences.UiLanguageVisibleOnMainWindow, preferences.UiCompactVisibleOnMainWindow, preferences.UiTransparencyVisibleOnMainWindow, true));
+
+    private void DrawTitleLanguage()
     {
         using var action = Font(UiFontRole.Action);
-        var scale = MaterialTheme.Metrics.Scale;
-        var metrics = MaterialControls.Metrics;
-        var language = Languages.FirstOrDefault(row => row.Code == preferences.Language).Name ?? "Select...";
-        var languageWidth = Math.Max(130 * scale, MathF.Ceiling(MaterialText.Measure(language).X
-            + metrics.Height + 3 * metrics.Gap + Math.Min(metrics.IconSize, metrics.Height)));
-        var compactWidth = ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure("C").X;
-        return (preferences.UiLanguageVisibleOnMainWindow ? languageWidth + ImGui.GetStyle().ItemSpacing.X : 0)
-            + (preferences.UiCompactVisibleOnMainWindow ? compactWidth + ImGui.GetStyle().ItemSpacing.X : 0)
-            + (preferences.UiTransparencyVisibleOnMainWindow ? ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure(T("Transparency")).X : 0);
+        var language = preferences.Language;
+        var options = new MaterialOptions<string>(Languages.Select(l => new MaterialOption<string>(l.Code, l.Code,
+            l.Code == "hi" && !fonts.HindiAvailable ? "Hindi (unavailable)" : l.Name, l.Code == "hi" && !fonts.HindiAvailable)).ToArray());
+        if (MaterialAppearanceSelector.DrawLanguage("DhogNav-public-titlebar-language", ref language, options, 130))
+        { preferences.Language = language; preferences.Save(); }
     }
-    internal void Appearance(bool header = false)
+
+    private void DrawTitleColour()
+    {
+        if (draftAccent != preferences.Accent)
+        { draftAccent = preferences.Accent; var rgb = UiStyle.Rgb(draftAccent); accentDraft = new(rgb.X, rgb.Y, rgb.Z); }
+        using var action = Font(UiFontRole.Action);
+        if (MaterialAppearanceSelector.DrawPalette("DhogNav-public-titlebar-colour", ref accentDraft,
+            new(T("Color"), T("Language"), T("Teal"), T("Blue"), T("Pink"), T("Custom RGB"))))
+        { preferences.Accent = UiStyle.Pack(accentDraft); preferences.Save(); }
+    }
+
+    internal void Appearance()
     {
         if (draftAccent != preferences.Accent)
         { draftAccent = preferences.Accent; var rgb = UiStyle.Rgb(draftAccent); accentDraft = new(rgb.X, rgb.Y, rgb.Z); }
@@ -93,36 +107,19 @@ internal sealed class PublicUi : IDisposable
         using var action = Font(UiFontRole.Action);
         var options = new MaterialOptions<string>(Languages.Select(l => new MaterialOption<string>(l.Code, l.Code,
             l.Code == "hi" && !fonts.HindiAvailable ? "Hindi (unavailable)" : l.Name, l.Code == "hi" && !fonts.HindiAvailable)).ToArray());
-        var accentChanged = false;
-        var languageChanged = false;
-        if (!header)
-        {
-            var changed = MaterialAppearanceSelector.Draw("DhogNav-public-appearance", ref accentDraft, ref language, options,
-                new(T("Color"), T("Language"), T("Teal"), T("Blue"), T("Pink"), T("Custom RGB")), 130);
-            accentChanged = changed.AccentChanged; languageChanged = changed.LanguageChanged;
-        }
-        else if (preferences.UiLanguageVisibleOnMainWindow)
-            languageChanged = MaterialAppearanceSelector.DrawLanguage("DhogNav-public-appearance", ref language, options, 130);
-        if (accentChanged) preferences.Accent = UiStyle.Pack(accentDraft);
-        if (languageChanged) preferences.Language = language;
-        if (!header || preferences.UiCompactVisibleOnMainWindow)
+        var changed = MaterialAppearanceSelector.Draw("DhogNav-public-appearance", ref accentDraft, ref language, options,
+            new(T("Color"), T("Language"), T("Teal"), T("Blue"), T("Pink"), T("Custom RGB")), 130);
+        if (changed.AccentChanged) preferences.Accent = UiStyle.Pack(accentDraft);
+        if (changed.LanguageChanged) preferences.Language = language;
         {
             var edge = ImGuiP.GetCurrentWindow().InnerClipRect.Max.X;
             var width = ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure("C").X;
-            if ((!header || preferences.UiLanguageVisibleOnMainWindow) && ImGui.GetItemRectMax().X + ImGui.GetStyle().ItemSpacing.X + width <= edge) ImGui.SameLine();
+            if (ImGui.GetItemRectMax().X + ImGui.GetStyle().ItemSpacing.X + width <= edge) ImGui.SameLine();
             var compact = preferences.Compact;
             if (ImGui.Checkbox("C##DhogNav-public-compact", ref compact)) { preferences.Compact = compact; preferences.Save(); }
             if (ImGui.IsItemHovered()) MaterialText.SetTooltip(T("Compact mode"));
         }
-        if (header && preferences.UiTransparencyVisibleOnMainWindow)
-        {
-            var edge = ImGuiP.GetCurrentWindow().InnerClipRect.Max.X;
-            var width = ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure(T("Transparency")).X;
-            if ((preferences.UiCompactVisibleOnMainWindow || preferences.UiLanguageVisibleOnMainWindow) && ImGui.GetItemRectMax().X + ImGui.GetStyle().ItemSpacing.X + width <= edge) ImGui.SameLine();
-            var enabled = preferences.UiTransparencyEnabled;
-            if (Checkbox(T("Transparency") + "###UiTransparencyHeader", ref enabled)) { preferences.UiTransparencyEnabled = enabled; preferences.Save(); }
-        }
-        if (accentChanged || languageChanged) preferences.Save();
+        if (changed.AccentChanged || changed.LanguageChanged) preferences.Save();
     }
     internal void Heading(string key)
     {

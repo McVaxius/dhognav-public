@@ -15,6 +15,7 @@ namespace DhogNav.PublicShell;
 
 internal sealed class IntroductionWindow : Window
 {
+    private readonly AethertekUI.Dalamud.MaterialAppearanceTitleBar appearanceTitleBar;
     private readonly AethertekUI.Dalamud.MaterialSupportLog supportLog = new();
     private readonly IDalamudPluginInterface supportPluginInterface;
     private readonly ICommandManager supportCommands;
@@ -55,10 +56,12 @@ internal sealed class IntroductionWindow : Window
             ShowTooltip = () => AethertekUI.MaterialText.SetTooltip(ui.T("Check installed access")
                 + (loader.Failed ? "\n" + ui.T("Access could not initialize. Check /xllog for [Access] details.") : "")),
         });
+        appearanceTitleBar = ui.RegisterTitleBar(this);
     }
 
     public override void PreDraw()
     {
+        appearanceTitleBar.RefreshVisibility();
         if (openAppearanceSection) ImGui.SetNextWindowCollapsed(false, ImGuiCond.Always);
         var style = ImGui.GetStyle();
         var fontSize = ImGui.GetFontSize();
@@ -79,6 +82,7 @@ internal sealed class IntroductionWindow : Window
     {
         motion.Restore(this);
         UiStyle.PaintTitleImage(this, $"DhogNav v{BuildInfo.Version}", icon);
+        appearanceTitleBar.DrawPopups();
         ui.ApplyWindowOpacity(opacity, WindowName);
     }
 

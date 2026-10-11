@@ -23,23 +23,10 @@ internal static class PublicIntroduction
     }
     internal static void Header(PublicUi ui, string version)
     {
-        var origin = ImGui.GetCursorScreenPos();
         ImGui.BeginGroup();
         using (ui.Font(ui.Compact ? UiFontRole.CompactTitle : UiFontRole.Title)) AethertekUI.MaterialText.Text("DhogNav");
         AethertekUI.MaterialText.TextDisabled("mcvaxius | v" + version);
         ImGui.EndGroup();
-        var brandMax = ImGui.GetItemRectMax();
-        var window = ImGuiP.GetCurrentWindow();
-        var right = window.InnerRect.Max.X - window.WindowPadding.X;
-        var width = ui.AppearanceWidth();
-        var gap = ImGui.GetStyle().ItemSpacing;
-        var inline = right - brandMax.X >= width + gap.X;
-        ImGui.SetCursorScreenPos(new Vector2(inline ? right - width : origin.X,
-            inline ? origin.Y : brandMax.Y + gap.Y));
-        ui.Appearance(header: true);
-        var bottom = Math.Max(brandMax.Y, ImGui.GetItemRectMax().Y);
-        ImGui.SetCursorScreenPos(new Vector2(origin.X, bottom + gap.Y));
-        ImGui.Dummy(Vector2.Zero);
     }
     internal static void Brand(PublicUi ui)
     {
