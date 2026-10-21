@@ -24,6 +24,9 @@ internal sealed class PublicUi : IDisposable
     private uint accent;
     private uint draftAccent = uint.MaxValue;
     private Vector3 accentDraft;
+    private MaterialColorSettings colorDraft = new();
+    private MaterialColorSettings? appliedSavedColors;
+    private MaterialColorSettings? appliedColors;
     private bool frameCompact;
     private bool loggedFontIssue;
     internal PublicUi(IDalamudPluginInterface pi, ITextureProvider textures)
@@ -54,7 +57,10 @@ internal sealed class PublicUi : IDisposable
             .Concat(sets["en"].Cast<DictionaryEntry>().Select(e => (string)e.Value!)).Concat(Languages.Where(l => l.Code != "hi").Select(l => l.Name)));
         UiStyle.Compact = frameCompact = preferences.Compact;
         var selected = preferences.Accent & 0xFFFFFF;
-        if (theme == null || accent != selected) { accent = selected; theme = UiStyle.Theme(selected, true); }
+        var savedColors = preferences.UiColors ?? new MaterialColorSettings();
+        if (savedColors != appliedSavedColors) { colorDraft = savedColors; appliedSavedColors = savedColors; }
+        if (theme == null || accent != selected || appliedColors != colorDraft)
+        { accent = selected; appliedColors = colorDraft; theme = UiStyle.Theme(selected, true, colorDraft); }
         theme.Density = frameCompact ? MaterialDensity.Compact : MaterialDensity.Standard;
         using var colors = MaterialTheme.Push(theme, ImGui.GetIO().FontGlobalScale, MaterialStyleMode.ColorsOnly);
         using var chrome = MaterialWindowChrome.Push();
@@ -91,12 +97,25 @@ internal sealed class PublicUi : IDisposable
 
     private void DrawTitleColour()
     {
+        using var action = Font(UiFontRole.Action);
+        if (DrawColourEditor("DhogNav-public-titlebar-colour")) preferences.Save();
+    }
+
+    private bool DrawColourEditor(string id)
+    {
         if (draftAccent != preferences.Accent)
         { draftAccent = preferences.Accent; var rgb = UiStyle.Rgb(draftAccent); accentDraft = new(rgb.X, rgb.Y, rgb.Z); }
-        using var action = Font(UiFontRole.Action);
-        if (MaterialAppearanceSelector.DrawPalette("DhogNav-public-titlebar-colour", ref accentDraft,
-            new(T("Color"), T("Language"), T("Teal"), T("Blue"), T("Pink"), T("Custom RGB"))))
-        { preferences.Accent = UiStyle.Pack(accentDraft); preferences.Save(); }
+        var changed = MaterialAppearanceSelector.DrawColors(id, ref colorDraft, ref accentDraft,
+            new(T("Color"), T("Language"), T("Teal"), T("Blue"), T("Pink"), T("Custom RGB")),
+            new(T("Auto"), T("Picker"), T("Default"), T("Background, controls and text follow your theme."),
+                T("Theme colour"), T("Choose each colour independently."), T("Background"), T("Controls"),
+                T("Text"), T("Aa  Preview text"), T("Control"),
+                T("Switch to Picker to set each colour yourself."), T("Switch back to Auto to use the automatic theme.")),
+            preferences.Compact ? 298 : 316);
+        if (!changed) return false;
+        preferences.UiColors = colorDraft;
+        preferences.Accent = MaterialColorSettings.ToRgb(accentDraft);
+        return true;
     }
 
     internal void Appearance()
@@ -107,10 +126,9 @@ internal sealed class PublicUi : IDisposable
         using var action = Font(UiFontRole.Action);
         var options = new MaterialOptions<string>(Languages.Select(l => new MaterialOption<string>(l.Code, l.Code,
             l.Code == "hi" && !fonts.HindiAvailable ? "Hindi (unavailable)" : l.Name, l.Code == "hi" && !fonts.HindiAvailable)).ToArray());
-        var changed = MaterialAppearanceSelector.Draw("DhogNav-public-appearance", ref accentDraft, ref language, options,
-            new(T("Color"), T("Language"), T("Teal"), T("Blue"), T("Pink"), T("Custom RGB")), 130);
-        if (changed.AccentChanged) preferences.Accent = UiStyle.Pack(accentDraft);
-        if (changed.LanguageChanged) preferences.Language = language;
+        var colourChanged = DrawColourEditor("DhogNav-public-appearance");
+        var languageChanged = MaterialAppearanceSelector.DrawLanguage("DhogNav-public-appearance", ref language, options, 130);
+        if (languageChanged) preferences.Language = language;
         {
             var edge = ImGuiP.GetCurrentWindow().InnerClipRect.Max.X;
             var width = ImGui.GetFrameHeight() + ImGui.GetStyle().ItemInnerSpacing.X + MaterialText.Measure("C").X;
@@ -119,7 +137,7 @@ internal sealed class PublicUi : IDisposable
             if (ImGui.Checkbox("C##DhogNav-public-compact", ref compact)) { preferences.Compact = compact; preferences.Save(); }
             if (ImGui.IsItemHovered()) MaterialText.SetTooltip(T("Compact mode"));
         }
-        if (changed.AccentChanged || changed.LanguageChanged) preferences.Save();
+        if (colourChanged || languageChanged) preferences.Save();
     }
     internal void Heading(string key)
     {

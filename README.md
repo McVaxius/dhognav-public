@@ -1,5 +1,7 @@
 # DhogNav
 
+Colour in the titlebar and Window appearance offers Auto (the existing accent theme) or Picker with independent Background, Controls and Text. Choices share the existing Version/Payload configuration and retain private and unknown settings.
+
 Compact mode is enabled once on upgrade. Main Compact and Transparency shortcuts start hidden; Window appearance can restore either shortcut independently and change density or opacity. Later loads retain those choices and unrelated settings.
 
 DhogNav is a FINAL FANTASY XIV plugin by McVaxius. The free public plugin provides an introduction and loads modules whose access is granted privately by the owner. Open it with `/dnav`.
