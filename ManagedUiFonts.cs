@@ -97,6 +97,7 @@ internal sealed class ManagedUiFonts : IDisposable
         if (ImGui.Begin("DhogNav##FontStatus", ImGuiWindowFlags.AlwaysAutoResize))
         {
             statusDecorations.Paint();
+            UiStyle.Header("DhogNav");
             MaterialText.TextWrapped(covered ? translated : loading ? "Preparing DhogNav interface fonts..." : "DhogNav interface fonts are unavailable. See the Dalamud log.");
             if (useEnglish is not null && ImGui.Button("Use English")) useEnglish();
         }

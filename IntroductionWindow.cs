@@ -89,13 +89,21 @@ internal sealed class IntroductionWindow : Window
     public override void Draw()
     {
         motion.DrawChrome();
+        if (AethertekUI.MaterialTheme.Current.IsLcars)
+        {
+            using var title = ui.Font(ui.Compact ? UiFontRole.CompactTitle : UiFontRole.Title);
+            UiStyle.Header("DhogNav");
+        }
         var root = ImGui.GetID("");
+        if (!AethertekUI.MaterialTheme.Current.IsLcars)
+        {
         var iconMin = ImGui.GetCursorScreenPos();
         var iconSize = new Vector2(ui.Compact ? 36 : 48) * ImGuiHelpers.GlobalScale;
         if (icon.TryGetWrap(out var texture, out _))
             AethertekUI.MaterialCanvas.DrawImage(ImGui.GetWindowDrawList(), texture.Handle, new(texture.Width, texture.Height), iconMin, iconMin + iconSize);
         ImGui.Dummy(iconSize); ImGui.SameLine();
         ImGui.BeginGroup(); PublicIntroduction.Header(ui, BuildInfo.Version); ImGui.EndGroup();
+        }
         PublicIntroduction.Card("DhogNav-PublicAbout", root, ui, AethertekUI.MaterialIcon.Globe, "PUBLIC ACCESS HOST", () =>
         {
             PublicIntroduction.Brand(ui);

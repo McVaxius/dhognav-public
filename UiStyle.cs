@@ -30,7 +30,7 @@ internal static class UiStyle
             count * (ImGuiP.CalcFontSize(native) + ImGui.GetStyle().ItemInnerSpacing.X), owner.ShowCloseButton);
     }
     internal static bool Compact { get; set; }
-    internal static float Padding => Compact ? 10 : 14;
+    internal static float Padding => MaterialTheme.Current.IsLcars ? 20 : Compact ? 10 : 14;
     internal static float Gap => Compact ? 10 : 14;
     internal static Vector4 Ready => Rgb(0x24E6CB);
     internal static Vector4 Warning => Rgb(0xFFBF68);
@@ -93,15 +93,38 @@ internal static class UiStyle
         scope.Style(ImGuiStyleVar.FrameRounding, 4 * scale);
         scope.Style(ImGuiStyleVar.ChildRounding, 4 * scale);
         scope.Style(ImGuiStyleVar.FrameBorderSize, scale);
+        if (MaterialTheme.Current.IsLcars)
+        {
+            scope.Color(ImGuiCol.CheckMark, MaterialLcars.ControlBlue);
+            scope.Color(ImGuiCol.SliderGrab, MaterialLcars.ControlBlue);
+            scope.Color(ImGuiCol.SliderGrabActive, MaterialLcars.ControlBlue);
+        }
         return scope;
+    }
+    internal static void Header(string title, bool frame = false)
+    {
+        if (!MaterialTheme.Current.IsLcars) return;
+        MaterialLcars.Header(title);
+        if (!frame) return;
+        ImGui.Dummy(new Vector2(0, 12 * MaterialTheme.Metrics.Scale));
+        var min = ImGui.GetCursorScreenPos() - new Vector2(16, 12) * MaterialTheme.Metrics.Scale;
+        var max = ImGui.GetCursorScreenPos() + Vector2.Max(new(1, 24 * MaterialTheme.Metrics.Scale), ImGui.GetContentRegionAvail())
+            + new Vector2(4, 0) * MaterialTheme.Metrics.Scale;
+        MaterialLcars.PanelFrame(min, max);
+    }
+    private static void Surface(Vector2 min, Vector2 max, bool raised)
+    {
+        if (MaterialTheme.Current.IsLcars) { MaterialLcars.PanelFrame(min, max); return; }
+        var colors = MaterialTheme.Current.Colors;
+        MaterialCanvas.Surface(min, max, raised ? colors.SurfaceContainerHigh : colors.Surface, colors.Background, 4 * MaterialTheme.Metrics.Scale);
+        ImGui.GetWindowDrawList().AddRect(min, max, MaterialCanvas.Color(colors.OutlineVariant), 4 * MaterialTheme.Metrics.Scale);
     }
     internal static void Panel(string id, uint root, Vector2 size, Action draw, bool raised = false)
     {
         var min = ImGui.GetCursorScreenPos();
         var extent = new Vector2(size.X <= 0 ? ImGui.GetContentRegionAvail().X : size.X, size.Y);
         var colors = MaterialTheme.Current.Colors;
-        MaterialCanvas.Surface(min, min + extent, raised ? colors.SurfaceContainerHigh : colors.Surface, colors.Background, 4 * MaterialTheme.Metrics.Scale);
-        ImGui.GetWindowDrawList().AddRect(min, min + extent, MaterialCanvas.Color(colors.OutlineVariant), 4 * MaterialTheme.Metrics.Scale);
+        Surface(min, min + extent, raised);
         ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(Padding * MaterialTheme.Metrics.Scale));
         ImGui.PushStyleColor(ImGuiCol.ChildBg, Vector4.Zero);
         try
@@ -133,8 +156,7 @@ internal static class UiStyle
             ImGuiP.TablePushBackgroundChannel();
             try
             {
-                MaterialCanvas.Surface(min, max, colors.SurfaceContainerHigh, colors.Surface, 4 * MaterialTheme.Metrics.Scale);
-                ImGui.GetWindowDrawList().AddRect(min, max, MaterialCanvas.Color(colors.OutlineVariant), 4 * MaterialTheme.Metrics.Scale);
+                Surface(min, max, true);
             }
             finally { ImGuiP.TablePopBackgroundChannel(); }
         }
@@ -143,15 +165,15 @@ internal static class UiStyle
     internal static bool NativeButton(string native, string visible, Vector2 size, bool primary = false, MaterialIcon icon = MaterialIcon.None)
     {
         var toolbar = size.Y <= 0 && MaterialControls.Context != MaterialControlContext.Dense && ImGui.GetStyle().FramePadding.Y > 0;
-        using var height = MaterialText.PushLineHeight(visible);
         using var controls = toolbar ? MaterialControls.Push(MaterialControlContext.Toolbar) : default;
+        using var height = MaterialText.PushLineHeight(visible);
         var textSize = MaterialText.Measure(visible);
         var iconSize = icon == MaterialIcon.None ? 0 : ImGui.GetFontSize() * 1.3f;
         if (toolbar)
             size.Y = MaterialControlMetrics.Measure(MaterialTheme.Metrics, Math.Max(ImGui.GetTextLineHeight(), Math.Max(textSize.Y, iconSize)), MaterialControlContext.Toolbar).Height;
         var colors = MaterialTheme.Current.Colors;
         var danger = icon == MaterialIcon.Delete;
-        if (primary || danger)
+        if (!MaterialTheme.Current.IsLcars && (primary || danger))
         {
             var fill = danger ? Vector4.Lerp(colors.Surface, Error, .2f) : colors.PrimaryContainer;
             var highlight = danger ? Error : colors.Primary;
@@ -159,12 +181,13 @@ internal static class UiStyle
             ImGui.PushStyleColor(ImGuiCol.ButtonHovered, Vector4.Lerp(fill, highlight, .25f));
             ImGui.PushStyleColor(ImGuiCol.ButtonActive, Vector4.Lerp(fill, highlight, .4f));
         }
+        using var outline = MaterialLcars.NativeButtonStyle(danger ? Error : primary ? MaterialLcars.ControlBlue : MaterialLcars.Lilac);
         // Keep the raw label's native ID, including buttons predating keyed localization.
         size.X = MaterialLayout.FitNextItemWidth(size.X, MathF.Ceiling(ButtonWidth(visible, icon)));
         ImGui.PushStyleColor(ImGuiCol.Text, Vector4.Zero);
         var pressed = ImGui.Button(native, size);
         ImGui.PopStyleColor();
-        if (primary || danger) ImGui.PopStyleColor(3);
+        if (!MaterialTheme.Current.IsLcars && (primary || danger)) ImGui.PopStyleColor(3);
         var min = ImGui.GetItemRectMin(); var max = ImGui.GetItemRectMax();
         var iconWidth = icon == MaterialIcon.None ? 0 : ImGui.GetFontSize() * 1.7f;
         var position = min + new Vector2((max.X - min.X - textSize.X - iconWidth) * .5f, (max.Y - min.Y - textSize.Y) * .5f);
@@ -173,6 +196,7 @@ internal static class UiStyle
         if (ImGui.GetStyle().Alpha < 1) ink.W *= ImGui.GetStyle().Alpha;
         if (icon != MaterialIcon.None) MaterialIcons.Draw(icon, toolbar ? new Vector2(position.X, min.Y + (max.Y - min.Y - iconSize) * .5f) : position, iconSize, ink);
         MaterialText.AddText(ImGui.GetWindowDrawList(), ImGui.GetFont(), ImGui.GetFontSize(), position + new Vector2(iconWidth, 0), ImGui.ColorConvertFloat4ToU32(ink), visible);
+        MaterialLcars.Feedback(pressed);
         return pressed;
     }
     internal static float ButtonWidth(string visible, MaterialIcon icon = MaterialIcon.None) => MathF.Ceiling(MaterialText.Measure(visible).X + ImGui.GetStyle().FramePadding.X * 2

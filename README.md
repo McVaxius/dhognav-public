@@ -1,6 +1,8 @@
 # DhogNav
 
-Colour in the titlebar and Window appearance offers Auto (the existing accent theme) or Picker with independent Background, Controls and Text. Choices share the existing Version/Payload configuration and retain private and unknown settings.
+Colour offers Auto / Picker / LCARS. LCARS adds segmented rails, elbows, panel frames and outlined native controls. Custom UI tones start muted; Window appearance and the LCARS titlebar speaker share the same saved choice. Switching modes retains Picker colours, navigation settings and unknown configuration data. Local checks are separate from game/GPU and audible-device acceptance.
+
+Colour in the titlebar and Window appearance offers Auto (the existing accent theme), Picker with independent Background, Controls and Text, and LCARS. Choices share the existing Version/Payload configuration and retain private and unknown settings.
 
 Compact mode is enabled once on upgrade. Main Compact and Transparency shortcuts start hidden; Window appearance can restore either shortcut independently and change density or opacity. Later loads retain those choices and unrelated settings.
 

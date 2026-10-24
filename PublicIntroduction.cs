@@ -13,9 +13,13 @@ internal static class PublicIntroduction
         {
             using (ui.Font(UiFontRole.BodyStrong))
             {
+                if (MaterialTheme.Current.IsLcars) MaterialLcars.PanelHeading(ui.T(heading));
+                else
+                {
                 MaterialIcons.Draw(symbol, ImGui.GetCursorScreenPos(), ImGui.GetFontSize(), MaterialTheme.Current.Colors.Primary);
                 ImGui.Dummy(new Vector2(ImGui.GetFontSize())); ImGui.SameLine();
                 AethertekUI.MaterialText.TextColored(MaterialTheme.Current.Colors.Primary, ui.T(heading));
+                }
             }
             draw();
         });

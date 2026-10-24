@@ -29,6 +29,8 @@ internal sealed class PublicUi : IDisposable
     private MaterialColorSettings? appliedColors;
     private bool frameCompact;
     private bool loggedFontIssue;
+    private MaterialUiSoundPlayer? uiSounds;
+    private readonly Dictionary<Dalamud.Interface.Windowing.Window, (AethertekUI.Dalamud.MaterialAppearanceTitleBar Appearance, Dalamud.Interface.Windowing.TitleBarButton Speaker)> titleBars = new();
     internal PublicUi(IDalamudPluginInterface pi, ITextureProvider textures)
     {
         preferences = new(pi); shapedText = new(textures);
@@ -62,6 +64,9 @@ internal sealed class PublicUi : IDisposable
         if (theme == null || accent != selected || appliedColors != colorDraft)
         { accent = selected; appliedColors = colorDraft; theme = UiStyle.Theme(selected, true, colorDraft); }
         theme.Density = frameCompact ? MaterialDensity.Compact : MaterialDensity.Standard;
+        theme.Feedback = PlaySound;
+        if (!LcarsActive || preferences.UiLcarsSoundsMuted) uiSounds?.Stop();
+        PrepareTitleBars();
         using var colors = MaterialTheme.Push(theme, ImGui.GetIO().FontGlobalScale, MaterialStyleMode.ColorsOnly);
         using var chrome = MaterialWindowChrome.Push();
         if (!fonts.Ready())
@@ -80,10 +85,66 @@ internal sealed class PublicUi : IDisposable
     }
 
     internal AethertekUI.Dalamud.MaterialAppearanceTitleBar RegisterTitleBar(Dalamud.Interface.Windowing.Window owner)
-        => AethertekUI.Dalamud.MaterialAppearanceTitleBar.Register(owner,
+    {
+        var appearance = AethertekUI.Dalamud.MaterialAppearanceTitleBar.Register(owner,
             () => new(T("Language"), T("Compact mode"), T("Transparency"), T("Color")),
             DrawTitleLanguage, () => { preferences.Compact = !preferences.Compact; preferences.Save(); }, WindowAppearance, DrawTitleColour,
             () => new(preferences.UiLanguageVisibleOnMainWindow, preferences.UiCompactVisibleOnMainWindow, preferences.UiTransparencyVisibleOnMainWindow, true));
+        var speaker = new Dalamud.Interface.Windowing.TitleBarButton
+        {
+            Priority = (int)Math.Max(int.MinValue + 1L, owner.TitleBarButtons.Select(button => (long)button.Priority).DefaultIfEmpty(0).Min() - 1),
+            IconOffset = new(2, 1),
+            Click = button => { if (button == ImGuiMouseButton.Left && LcarsActive) SetSoundsMuted(!preferences.UiLcarsSoundsMuted); },
+            ShowTooltip = () => MaterialText.SetTooltip(T(preferences.UiLcarsSoundsMuted ? "UI sounds muted" : "UI sounds on")),
+        };
+        titleBars.Add(owner, (appearance, speaker));
+        return appearance;
+    }
+    private void PrepareTitleBars()
+    {
+        foreach (var (owner, controls) in titleBars)
+        {
+            controls.Appearance.SetLcarsIcons(LcarsActive);
+            controls.Speaker.Icon = preferences.UiLcarsSoundsMuted ? Dalamud.Interface.FontAwesomeIcon.VolumeMute : Dalamud.Interface.FontAwesomeIcon.VolumeUp;
+            if (LcarsActive && !owner.TitleBarButtons.Contains(controls.Speaker)) owner.TitleBarButtons.Add(controls.Speaker);
+            else if (!LcarsActive) owner.TitleBarButtons.Remove(controls.Speaker);
+        }
+    }
+    private bool LcarsActive => preferences.UiColors?.Mode == MaterialColorMode.Lcars;
+    private void PlaySound(MaterialUiSoundCue cue)
+    {
+        if (LcarsActive && !preferences.UiLcarsSoundsMuted) (uiSounds ??= new MaterialUiSoundPlayer()).TryPlay(cue);
+    }
+    private void SetSoundsMuted(bool muted)
+    {
+        preferences.UiLcarsSoundsMuted = muted; preferences.Save();
+        if (muted) uiSounds?.Stop();
+    }
+    private void DrawLcarsSounds()
+    {
+        Heading("LCARS UI sounds");
+        ImGui.BeginDisabled(!LcarsActive);
+        try
+        {
+        var enabled = !preferences.UiLcarsSoundsMuted;
+        if (Checkbox(T("UI sounds") + "###DhogNavPublicUiSounds", ref enabled)) SetSoundsMuted(!enabled);
+        MaterialText.TextWrapped(T("Custom UI tones. The titlebar speaker toggles the same setting."));
+        ImGui.BeginDisabled(preferences.UiLcarsSoundsMuted);
+        try
+        {
+        var feedback = MaterialTheme.Current.Feedback;
+        bool preview;
+        try { MaterialTheme.Current.Feedback = null; preview = UiStyle.NativeButton("Preview sound", T("Preview sound"), Vector2.Zero); }
+        finally { MaterialTheme.Current.Feedback = feedback; }
+        MaterialLcars.Feedback(preview, MaterialUiSoundCue.Preview);
+        }
+        finally { ImGui.EndDisabled(); }
+        }
+        finally { ImGui.EndDisabled(); }
+        if (uiSounds?.Error is not null) MaterialText.TextWrapped(T("Audio output is unavailable."));
+        if (!LcarsActive) MaterialText.TextWrapped(T("Select LCARS to use UI sounds."));
+        else if (preferences.UiLcarsSoundsMuted) MaterialText.TextWrapped(T("Turn on UI sounds to preview."));
+    }
 
     private void DrawTitleLanguage()
     {
@@ -110,11 +171,13 @@ internal sealed class PublicUi : IDisposable
             new(T("Auto"), T("Picker"), T("Default"), T("Background, controls and text follow your theme."),
                 T("Theme colour"), T("Choose each colour independently."), T("Background"), T("Controls"),
                 T("Text"), T("Aa  Preview text"), T("Control"),
-                T("Switch to Picker to set each colour yourself."), T("Switch back to Auto to use the automatic theme.")),
+                T("Switch to Picker to set each colour yourself."), T("Switch back to Auto to use the automatic theme."))
+            { Lcars = T("LCARS"), LcarsHelp = T("LCARS panels, bars and controls") },
             preferences.Compact ? 298 : 316);
         if (!changed) return false;
         preferences.UiColors = colorDraft;
         preferences.Accent = MaterialColorSettings.ToRgb(accentDraft);
+        if (!LcarsActive) uiSounds?.Stop();
         return true;
     }
 
@@ -141,13 +204,15 @@ internal sealed class PublicUi : IDisposable
     }
     internal void Heading(string key)
     {
-        using var heading = Font(UiFontRole.Heading); MaterialText.Text(T(key));
+        using var heading = Font(UiFontRole.Heading);
+        if (MaterialTheme.Current.IsLcars) MaterialLcars.PanelHeading(T(key)); else MaterialText.Text(T(key));
     }
-    public void Dispose() { fonts.Dispose(); shapedText.Dispose(); foreach (var set in sets.Values) set.Dispose(); }
+    public void Dispose() { uiSounds?.Dispose(); fonts.Dispose(); shapedText.Dispose(); foreach (var set in sets.Values) set.Dispose(); }
     internal void WindowAppearance()
     {
         MaterialText.Text(T("Window appearance"));
         Appearance();
+        DrawLcarsSounds();
         var changed = false;
         var compactVisibleOnMainWindow = preferences.UiCompactVisibleOnMainWindow;
         if (Checkbox(T("Compact visible on main window") + "###UiCompactVisibleOnMainWindowSettings", ref compactVisibleOnMainWindow))
@@ -185,7 +250,11 @@ internal sealed class PublicUi : IDisposable
     private static bool Checkbox(string native, ref bool value)
     {
         var text = native.Split("##",2)[0];
-        if (!MaterialText.RequiresShaping(text)) return ImGui.Checkbox(native,ref value);
+        if (!MaterialText.RequiresShaping(text))
+        {
+            var activated = ImGui.Checkbox(native,ref value);
+            MaterialLcars.Feedback(activated, MaterialUiSoundCue.Toggle); return activated;
+        }
         using var height = MaterialText.PushLineHeight(text);
         var gap = ImGui.GetStyle().ItemInnerSpacing;
         ImGui.PushStyleVar(ImGuiStyleVar.ItemInnerSpacing, new Vector2(gap.X+MaterialText.Measure(text).X-ImGui.CalcTextSize(text).X,gap.Y));
@@ -195,6 +264,7 @@ internal sealed class PublicUi : IDisposable
         finally { ImGui.PopStyleColor(); ImGui.PopStyleVar(); }
         var min=ImGui.GetItemRectMin();var max=ImGui.GetItemRectMax();
         MaterialText.AddText(ImGui.GetWindowDrawList(),min+new Vector2(ImGui.GetFrameHeight()+gap.X,(max.Y-min.Y-MaterialText.Measure(text).Y)*.5f),ImGui.GetColorU32(ImGuiCol.Text),text);
+        MaterialLcars.Feedback(changed, MaterialUiSoundCue.Toggle);
         return changed;
     }
     private static bool SliderInt(string native, ref int value, int minimum, int maximum, string format, ImGuiSliderFlags flags)
