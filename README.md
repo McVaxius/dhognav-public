@@ -1,8 +1,6 @@
 # DhogNav
 
-Colour offers Auto / Picker / LCARS. LCARS adds segmented rails, elbows, panel frames and outlined native controls. Custom UI tones start muted; Window appearance and the LCARS titlebar speaker share the same saved choice. Switching modes retains Picker colours, navigation settings and unknown configuration data. Local checks are separate from game/GPU and audible-device acceptance.
-
-Colour in the titlebar and Window appearance offers Auto (the existing accent theme), Picker with independent Background, Controls and Text, and LCARS. Choices share the existing Version/Payload configuration and retain private and unknown settings.
+Colour in the titlebar and Window appearance offers Auto, Picker, LCARS, Glassmorphism, Spatial and Cyberpunk. Each new material has its own Background, Controls and Text colours; LCARS has an independent background and three bar colours. Per-colour and current-palette resets restore that mode's defaults. Glass waves have three separate colour choices, with animation on by default and speed from 0.1 to 10 times normal (default 1); wave colours stay editable with animation off. Custom UI tones start muted; Window appearance and the LCARS titlebar speaker share the same saved choice. Choices use the existing Version/Payload configuration and retain other palettes, private navigation settings and unknown data. Local checks are separate from game/GPU and audible-device acceptance.
 
 Compact mode is enabled once on upgrade. Main Compact and Transparency shortcuts start hidden; Window appearance can restore either shortcut independently and change density or opacity. Later loads retain those choices and unrelated settings.
 

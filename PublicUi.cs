@@ -81,6 +81,7 @@ internal sealed class PublicUi : IDisposable
         }
         using var geometry = UiStyle.Geometry(ImGui.GetIO().FontGlobalScale);
         using var body = fonts.Push(UiFontRole.Body);
+        using var backdrop = MaterialSkin.BackdropStyle();
         draw();
     }
 
@@ -172,7 +173,17 @@ internal sealed class PublicUi : IDisposable
                 T("Theme colour"), T("Choose each colour independently."), T("Background"), T("Controls"),
                 T("Text"), T("Aa  Preview text"), T("Control"),
                 T("Switch to Picker to set each colour yourself."), T("Switch back to Auto to use the automatic theme."))
-            { Lcars = T("LCARS"), LcarsHelp = T("LCARS panels, bars and controls") },
+            {
+                Lcars = T("LCARS"), LcarsHelp = T("LCARS panels, bars and controls"),
+                Glassmorphism = T("Glassmorphism"), Spatial = T("Spatial"), Cyberpunk = T("Cyberpunk"),
+                LcarsBar1 = T("LCARS bar 1"), LcarsBar2 = T("LCARS bar 2"), LcarsBar3 = T("LCARS bar 3"),
+                Reset = T("Reset"), ResetColors = T("Reset colours"),
+                Animation = T("Animation"), AnimationSpeed = T("Animation speed (0.1–10x; default 1x)"),
+                WaveColors = T("Wave colours"), GlassWave1 = T("Wave colour 1"),
+                GlassWave2 = T("Wave colour 2"), GlassWave3 = T("Wave colour 3"),
+                ResetWaveColors = T("Reset wave colours"),
+            },
+            new MaterialColorSettings(), MaterialColorSettings.Rgb(0xA475FF),
             preferences.Compact ? 298 : 316);
         if (!changed) return false;
         preferences.UiColors = colorDraft;
@@ -205,7 +216,8 @@ internal sealed class PublicUi : IDisposable
     internal void Heading(string key)
     {
         using var heading = Font(UiFontRole.Heading);
-        if (MaterialTheme.Current.IsLcars) MaterialLcars.PanelHeading(T(key)); else MaterialText.Text(T(key));
+        if (MaterialTheme.Current.IsLcars || MaterialTheme.Current.IsCyberpunk) MaterialSkin.Heading(T(key));
+        else MaterialText.Text(T(key));
     }
     public void Dispose() { uiSounds?.Dispose(); fonts.Dispose(); shapedText.Dispose(); foreach (var set in sets.Values) set.Dispose(); }
     internal void WindowAppearance()
@@ -270,11 +282,13 @@ internal sealed class PublicUi : IDisposable
     private static bool SliderInt(string native, ref int value, int minimum, int maximum, string format, ImGuiSliderFlags flags)
     {
         using var caption = new FieldCaption(native);
+        using var field = MaterialSkin.NativeFieldStyle();
         return ImGui.SliderInt(native,ref value,minimum,maximum,format,flags);
     }
     private static bool InputFloat(string native, ref float value)
     {
         using var caption = new FieldCaption(native);
+        using var field = MaterialSkin.NativeFieldStyle();
         return ImGui.InputFloat(native,ref value);
     }
     private readonly ref struct FieldCaption

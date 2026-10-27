@@ -88,6 +88,7 @@ internal sealed class IntroductionWindow : Window
 
     public override void Draw()
     {
+        AethertekUI.MaterialSkin.Backdrop();
         motion.DrawChrome();
         if (AethertekUI.MaterialTheme.Current.IsLcars)
         {

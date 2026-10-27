@@ -103,18 +103,23 @@ internal static class UiStyle
     }
     internal static void Header(string title, bool frame = false)
     {
-        if (!MaterialTheme.Current.IsLcars) return;
-        MaterialLcars.Header(title);
+        var theme = MaterialTheme.Current;
+        var material = theme.IsGlassmorphism || theme.IsSpatial || theme.IsCyberpunk;
+        if (!theme.IsLcars && !material) return;
+        if (theme.IsLcars) MaterialLcars.Header(title);
+        else MaterialSkin.Heading(title);
         if (!frame) return;
         ImGui.Dummy(new Vector2(0, 12 * MaterialTheme.Metrics.Scale));
         var min = ImGui.GetCursorScreenPos() - new Vector2(16, 12) * MaterialTheme.Metrics.Scale;
         var max = ImGui.GetCursorScreenPos() + Vector2.Max(new(1, 24 * MaterialTheme.Metrics.Scale), ImGui.GetContentRegionAvail())
             + new Vector2(4, 0) * MaterialTheme.Metrics.Scale;
-        MaterialLcars.PanelFrame(min, max);
+        MaterialSkin.PanelFrame(min, max);
     }
     private static void Surface(Vector2 min, Vector2 max, bool raised)
     {
         if (MaterialTheme.Current.IsLcars) { MaterialLcars.PanelFrame(min, max); return; }
+        if (MaterialTheme.Current.IsGlassmorphism || MaterialTheme.Current.IsSpatial || MaterialTheme.Current.IsCyberpunk)
+        { MaterialSkin.PanelFrame(min, max, inset: !raised); return; }
         var colors = MaterialTheme.Current.Colors;
         MaterialCanvas.Surface(min, max, raised ? colors.SurfaceContainerHigh : colors.Surface, colors.Background, 4 * MaterialTheme.Metrics.Scale);
         ImGui.GetWindowDrawList().AddRect(min, max, MaterialCanvas.Color(colors.OutlineVariant), 4 * MaterialTheme.Metrics.Scale);
@@ -166,6 +171,8 @@ internal static class UiStyle
     {
         var toolbar = size.Y <= 0 && MaterialControls.Context != MaterialControlContext.Dense && ImGui.GetStyle().FramePadding.Y > 0;
         using var controls = toolbar ? MaterialControls.Push(MaterialControlContext.Toolbar) : default;
+        var material = MaterialTheme.Current.IsGlassmorphism || MaterialTheme.Current.IsSpatial || MaterialTheme.Current.IsCyberpunk;
+        var radius = ImGui.GetStyle().FrameRounding;
         using var height = MaterialText.PushLineHeight(visible);
         var textSize = MaterialText.Measure(visible);
         var iconSize = icon == MaterialIcon.None ? 0 : ImGui.GetFontSize() * 1.3f;
@@ -173,22 +180,26 @@ internal static class UiStyle
             size.Y = MaterialControlMetrics.Measure(MaterialTheme.Metrics, Math.Max(ImGui.GetTextLineHeight(), Math.Max(textSize.Y, iconSize)), MaterialControlContext.Toolbar).Height;
         var colors = MaterialTheme.Current.Colors;
         var danger = icon == MaterialIcon.Delete;
+        using var emphasis = new MaterialStyleScope();
         if (!MaterialTheme.Current.IsLcars && (primary || danger))
         {
             var fill = danger ? Vector4.Lerp(colors.Surface, Error, .2f) : colors.PrimaryContainer;
             var highlight = danger ? Error : colors.Primary;
-            ImGui.PushStyleColor(ImGuiCol.Button, fill);
-            ImGui.PushStyleColor(ImGuiCol.ButtonHovered, Vector4.Lerp(fill, highlight, .25f));
-            ImGui.PushStyleColor(ImGuiCol.ButtonActive, Vector4.Lerp(fill, highlight, .4f));
+            emphasis.Color(ImGuiCol.Button, fill);
+            emphasis.Color(ImGuiCol.ButtonHovered, Vector4.Lerp(fill, highlight, .25f));
+            emphasis.Color(ImGuiCol.ButtonActive, Vector4.Lerp(fill, highlight, .4f));
         }
-        using var outline = MaterialLcars.NativeButtonStyle(danger ? Error : primary ? MaterialLcars.ControlBlue : MaterialLcars.Lilac);
+        using var outline = MaterialSkin.NativeButtonStyle(danger ? Error : primary ? MaterialLcars.ControlBlue : MaterialLcars.Lilac);
+        using var shape = new MaterialStyleScope();
+        if (material) shape.Style(ImGuiStyleVar.FrameRounding, radius);
         // Keep the raw label's native ID, including buttons predating keyed localization.
         size.X = MaterialLayout.FitNextItemWidth(size.X, MathF.Ceiling(ButtonWidth(visible, icon)));
         ImGui.PushStyleColor(ImGuiCol.Text, Vector4.Zero);
-        var pressed = ImGui.Button(native, size);
-        ImGui.PopStyleColor();
-        if (!MaterialTheme.Current.IsLcars && (primary || danger)) ImGui.PopStyleColor(3);
+        bool pressed;
+        try { using var face = material ? MaterialSkin.TransparentButtonFace() : default; pressed = ImGui.Button(native, size); }
+        finally { ImGui.PopStyleColor(); }
         var min = ImGui.GetItemRectMin(); var max = ImGui.GetItemRectMax();
+        if (material) MaterialSkin.PaintButton(min, max, ImGui.GetStyle().Alpha, radius);
         var iconWidth = icon == MaterialIcon.None ? 0 : ImGui.GetFontSize() * 1.7f;
         var position = min + new Vector2((max.X - min.X - textSize.X - iconWidth) * .5f, (max.Y - min.Y - textSize.Y) * .5f);
         var ink = ImGui.GetStyle().Colors[(int)ImGuiCol.Text];

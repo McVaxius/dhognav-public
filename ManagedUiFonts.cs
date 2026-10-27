@@ -94,8 +94,11 @@ internal sealed class ManagedUiFonts : IDisposable
         var covered = MaterialText.NativeGlyphText(translated).EnumerateRunes().Where(rune => !Rune.IsControl(rune)).All(rune => rune.Value<=ushort.MaxValue && ImGui.FindGlyphNoFallback(ImGui.GetFont(), (ushort)rune.Value).Handle != null);
         ImGui.SetNextWindowSize(new System.Numerics.Vector2(450 * ImGui.GetIO().FontGlobalScale, 0));
         statusMotion.PreDraw("DhogNav##FontStatus", null, null, reducedMotion: false, prepareDecorations: statusDecorations.Prepare);
-        if (ImGui.Begin("DhogNav##FontStatus", ImGuiWindowFlags.AlwaysAutoResize))
+        bool visible;
+        using (MaterialSkin.BackdropStyle()) visible = ImGui.Begin("DhogNav##FontStatus", ImGuiWindowFlags.AlwaysAutoResize);
+        if (visible)
         {
+            MaterialSkin.Backdrop();
             statusDecorations.Paint();
             UiStyle.Header("DhogNav");
             MaterialText.TextWrapped(covered ? translated : loading ? "Preparing DhogNav interface fonts..." : "DhogNav interface fonts are unavailable. See the Dalamud log.");
