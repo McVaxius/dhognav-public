@@ -1,5 +1,7 @@
 # DhogNav
 
+Public-host **3.0.0.1** updates the shared UI controls and glass rendering to AethertekUI 0.3.1. Updates for the remaining existing consumers are in progress.
+
 Colour in the titlebar and Window appearance offers Auto, Picker, LCARS, Glassmorphism, Spatial and Cyberpunk. Each new material has its own Background, Controls and Text colours; LCARS has an independent background and three bar colours. Per-colour and current-palette resets restore that mode's defaults. Glass waves have three separate colour choices, with animation on by default and speed from 0.1 to 10 times normal (default 1); wave colours stay editable with animation off. Custom UI tones start muted; Window appearance and the LCARS titlebar speaker share the same saved choice. Choices use the existing Version/Payload configuration and retain other palettes, private navigation settings and unknown data. Local checks are separate from game/GPU and audible-device acceptance.
 
 Compact mode is enabled once on upgrade. Main Compact and Transparency shortcuts start hidden; Window appearance can restore either shortcut independently and change density or opacity. Later loads retain those choices and unrelated settings.
@@ -66,9 +68,9 @@ Private modules and public shells use the current Dalamud host's ClientStructs a
 
 This repository contains the complete public host source, loader, public trust anchor and manifest validation. It builds without private source or files from `!cryptography`. Keep the `aethertekUI` checkout beside this repository. With .NET SDK 10.0.201 and Dalamud API 15 references available, run `dotnet build DhogNav.csproj -c Release -p:Platform=x64`. The eight-file public package includes `AethertekUI.dll` and `AethertekUI.Dalamud.dll` and is written to `bin/x64/Release/DhogNav/latest.zip`; `Z:\dnavp.bat` also copies it to this repository's `latest.zip`. GitHub Actions checks out the sibling UI repository using the read-only `AETHERTEKUI_DEPLOY_KEY` secret.
 
-Public release version: `2.0.0.6`. The CLR assembly identity remains `1.0.0.0` for private-module compatibility.
+Public release version: `3.0.0.1`. The CLR assembly identity remains `1.0.0.0` for private-module compatibility.
 
-The dependency checkout follows published AethertekUI main so compatible API additions are available without per-plugin pin updates. Publish shared library APIs before consumer changes. Authentication uses the repository-specific read-only SSH deploy key, which has no expiration; checkout does not persist credentials.
+The dependency checkout is pinned to reviewed AethertekUI 0.3.1 at `21e76f87fefe7989519f010eb817e0037de6555f`. Publish shared library APIs before consumer changes. Authentication uses the repository-specific read-only SSH deploy key, which has no expiration; checkout does not persist credentials.
 
 ## Ownership
 
