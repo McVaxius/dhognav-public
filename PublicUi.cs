@@ -63,6 +63,7 @@ internal sealed class PublicUi : IDisposable
         if (savedColors != appliedSavedColors) { colorDraft = savedColors; appliedSavedColors = savedColors; }
         if (theme == null || accent != selected || appliedColors != colorDraft)
         { accent = selected; appliedColors = colorDraft; theme = UiStyle.Theme(selected, true, colorDraft); }
+        theme.HighlightContrastPercent = preferences.UiHighlightContrastPercent;
         theme.Density = frameCompact ? MaterialDensity.Compact : MaterialDensity.Standard;
         theme.Feedback = PlaySound;
         if (!LcarsActive || preferences.UiLcarsSoundsMuted) uiSounds?.Stop();
@@ -167,7 +168,21 @@ internal sealed class PublicUi : IDisposable
     {
         if (draftAccent != preferences.Accent)
         { draftAccent = preferences.Accent; var rgb = UiStyle.Rgb(draftAccent); accentDraft = new(rgb.X, rgb.Y, rgb.Z); }
-        var changed = MaterialAppearanceSelector.DrawColors(id, ref colorDraft, ref accentDraft,
+        var contrast = preferences.UiHighlightContrastPercent;
+        bool contrastChanged;
+        ImGui.PushID(id);
+        try
+        {
+            if (MaterialSettings.Field("##UiHighlightContrastPercent", T("Highlight contrast"), 180 * MaterialTheme.Metrics.Scale,
+                native => { using var field = MaterialSkin.NativeFieldStyle(); return ImGui.SliderInt(native, ref contrast, 0, 100, "%d%%", ImGuiSliderFlags.AlwaysClamp); }))
+                preferences.UiHighlightContrastPercent = contrast;
+            contrastChanged = ImGui.IsItemDeactivatedAfterEdit();
+            MaterialText.Text(T("Makes controls and selection states more distinct."), Math.Max(1, ImGui.GetContentRegionAvail().X));
+            ImGui.Spacing();
+        }
+        finally { ImGui.PopID(); }
+        var changed = contrastChanged;
+        changed |= MaterialAppearanceSelector.DrawColors(id, ref colorDraft, ref accentDraft,
             new(T("Color"), T("Language"), T("Teal"), T("Blue"), T("Pink"), T("Custom RGB")),
             new(T("Auto"), T("Picker"), T("Default"), T("Background, controls and text follow your theme."),
                 T("Theme colour"), T("Choose each colour independently."), T("Background"), T("Controls"),

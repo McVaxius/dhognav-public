@@ -11,6 +11,8 @@ internal sealed class PublicPreferences
     private DateTime observedWrite = DateTime.MinValue;
     internal uint Accent { get; set; } = 0xA475FF;
     internal AethertekUI.MaterialColorSettings UiColors { get; set; } = new();
+    private int uiHighlightContrastPercent = 50;
+    internal int UiHighlightContrastPercent { get => uiHighlightContrastPercent; set => uiHighlightContrastPercent = Math.Clamp(value, 0, 100); }
     internal bool UiLcarsSoundsMuted { get; set; } = true;
     internal bool Compact { get; set; } = true;
     internal string Language { get; set; } = "en";
@@ -44,6 +46,7 @@ internal sealed class PublicPreferences
         UiColors = payload?["UiColors"]?.Deserialize<AethertekUI.MaterialColorSettings>(new JsonSerializerOptions
             { Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() } }) ?? new();
         UiColors.Validate();
+        UiHighlightContrastPercent = payload?["UiHighlightContrastPercent"]?.GetValue<int>() ?? 50;
         UiLcarsSoundsMuted = payload?["UiLcarsSoundsMuted"]?.GetValue<bool>() ?? true;
         Compact = payload?["UiCompact"]?.GetValue<bool>() ?? true;
         Language = payload?["UiLanguage"]?.GetValue<string>() ?? "en";
@@ -66,6 +69,7 @@ internal sealed class PublicPreferences
         var payload = root["Payload"] as JsonObject;
         if (payload == null) { payload = new JsonObject(); root["Payload"] = payload; }
         payload["UiColors"] = JsonSerializer.SerializeToNode(UiColors);
+        payload["UiHighlightContrastPercent"] = UiHighlightContrastPercent;
         payload["UiLcarsSoundsMuted"] = UiLcarsSoundsMuted;
         payload["UiAccentRgb"] = Accent; payload["UiCompact"] = Compact; payload["UiLanguage"] = Language;
         payload["UiCompactVisibleOnMainWindow"] = UiCompactVisibleOnMainWindow;
