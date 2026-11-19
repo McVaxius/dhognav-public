@@ -2,5 +2,5 @@ namespace DhogNav.PublicShell;
 
 internal static class BuildInfo
 {
-    public const string Version = "3.0.0.3";
+    public const string Version = "3.0.0.4";
 }
