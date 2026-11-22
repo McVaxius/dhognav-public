@@ -1,5 +1,6 @@
 using System.Numerics;
 using AethertekUI;
+using AethertekUI.Dalamud;
 using Dalamud.Bindings.ImGui;
 using Dalamud.Interface.Textures;
 using Dalamud.Interface.Windowing;
@@ -15,7 +16,9 @@ internal enum UiFontRole { Body, BodyStrong, Title, Caption, Small, Heading, Act
 internal static class UiStyle
 {
     internal static readonly float[] FontSizes = [11, 12, 24, 10, 9, 13, 11, 21];
-    internal static readonly string[] FontFiles = ["segoeui.ttf", "seguisb.ttf", "segoeuib.ttf", "segoeui.ttf", "segoeui.ttf", "seguisb.ttf", "seguisb.ttf", "segoeuib.ttf"];
+    internal static readonly MaterialFontWeight[] FontWeights = [
+        MaterialFontWeight.Regular, MaterialFontWeight.Semibold, MaterialFontWeight.Bold, MaterialFontWeight.Regular,
+        MaterialFontWeight.Regular, MaterialFontWeight.Semibold, MaterialFontWeight.Semibold, MaterialFontWeight.Bold];
     internal static void PaintTitleImage(Window owner, string visibleTitle, ISharedImmediateTexture icon)
     {
         var native = ImGuiP.FindWindowByName(owner.WindowName);

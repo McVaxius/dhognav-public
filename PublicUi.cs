@@ -34,7 +34,8 @@ internal sealed class PublicUi : IDisposable
     internal PublicUi(IDalamudPluginInterface pi, ITextureProvider textures)
     {
         preferences = new(pi); shapedText = new(textures);
-        fonts = new(pi.UiBuilder, "DhogNav public interface") { ShapedText = shapedText.Renderer };
+        fonts = new(pi.UiBuilder, "DhogNav public interface", pi.AssemblyLocation.DirectoryName!)
+        { ShapedText = shapedText.Renderer };
         foreach (var language in Languages)
         {
             var stream = typeof(PublicUi).Assembly.GetManifestResourceStream("DhogNav.PublicShell.Strings." + language.Code + ".resources")
