@@ -124,6 +124,7 @@ public sealed class Plugin : IDalamudPlugin
         if (IsDisposed) return;
         if (!release.Allowed) { windows.Draw(); return; }
         if (publicWindow.IsOpen) presentation!.Draw(windows.Draw, error => Log?.Error(error, "DhogNav public UI font coverage failed."));
+        else presentation!.ReleaseWindowResources();
         loader.Module?.Draw();
     }
 

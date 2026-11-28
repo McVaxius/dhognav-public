@@ -16,7 +16,8 @@ internal sealed class PublicUi : IDisposable
         ("vi", "Tiếng Việt"), ("pt-BR", "Português (Brasil)"), ("id", "Bahasa Indonesia"), ("pl", "Polski"), ("tr", "Türkçe"), ("hi", "हिन्दी")];
     private readonly PublicPreferences preferences;
     private readonly ManagedUiFonts fonts;
-    private readonly AethertekUI.Dalamud.MaterialTextHost shapedText;
+    private readonly ITextureProvider textures;
+    private AethertekUI.Dalamud.MaterialTextHost? shapedText;
     private readonly MaterialWindowOpacity fontStatusOpacity = new();
     private readonly Dictionary<string, ResourceSet> sets = [];
     private ResourceSet current = null!;
@@ -33,9 +34,9 @@ internal sealed class PublicUi : IDisposable
     private readonly Dictionary<Dalamud.Interface.Windowing.Window, (AethertekUI.Dalamud.MaterialAppearanceTitleBar Appearance, Dalamud.Interface.Windowing.TitleBarButton Speaker)> titleBars = new();
     internal PublicUi(IDalamudPluginInterface pi, ITextureProvider textures)
     {
-        preferences = new(pi); shapedText = new(textures);
-        fonts = new(pi.UiBuilder, "DhogNav public interface", pi.AssemblyLocation.DirectoryName!)
-        { ShapedText = shapedText.Renderer };
+        preferences = new(pi);
+        this.textures = textures;
+        fonts = new(pi.UiBuilder, "DhogNav public interface", pi.AssemblyLocation.DirectoryName!);
         foreach (var language in Languages)
         {
             var stream = typeof(PublicUi).Assembly.GetManifestResourceStream("DhogNav.PublicShell.Strings." + language.Code + ".resources")
@@ -52,6 +53,8 @@ internal sealed class PublicUi : IDisposable
     internal bool Compact => frameCompact;
     internal void Draw(Action draw, Action<Exception> report)
     {
+        shapedText ??= new(textures);
+        fonts.ShapedText = shapedText.Renderer;
         using var shaping = shapedText.Push();
         preferences.Reload();
         var language = sets.ContainsKey(preferences.Language) ? preferences.Language : "en";
@@ -235,7 +238,22 @@ internal sealed class PublicUi : IDisposable
         if (MaterialTheme.Current.IsLcars || MaterialTheme.Current.IsCyberpunk) MaterialSkin.Heading(T(key));
         else MaterialText.Text(T(key));
     }
-    public void Dispose() { uiSounds?.Dispose(); fonts.Dispose(); shapedText.Dispose(); foreach (var set in sets.Values) set.Dispose(); }
+    internal void ReleaseWindowResources()
+    {
+        fonts.Release();
+        fonts.ShapedText = null;
+        shapedText?.Dispose();
+        shapedText = null;
+        uiSounds?.Dispose();
+        uiSounds = null;
+        loggedFontIssue = false;
+    }
+
+    public void Dispose()
+    {
+        ReleaseWindowResources();
+        foreach (var set in sets.Values) set.Dispose();
+    }
     internal void WindowAppearance()
     {
         MaterialText.Text(T("Window appearance"));

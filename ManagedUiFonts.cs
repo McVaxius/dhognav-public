@@ -13,8 +13,10 @@ namespace DhogNav.PublicShell;
 
 internal sealed class ManagedUiFonts : IDisposable
 {
-    private readonly IFontAtlas atlas;
+    private readonly IUiBuilder builder;
+    private readonly string label;
     private readonly string assetRoot;
+    private IFontAtlas? atlas;
     internal MaterialTextRenderer? ShapedText { get; set; }
     private static readonly MaterialWindowFold statusMotion = new();
     private static readonly MaterialWindowDecorations statusDecorations = new();
@@ -27,27 +29,44 @@ internal sealed class ManagedUiFonts : IDisposable
     internal bool HindiAvailable { get; private set; }
     internal ManagedUiFonts(IUiBuilder builder, string label, string assetRoot)
     {
+        this.builder = builder;
+        this.label = label;
         this.assetRoot = assetRoot;
-        atlas = builder.CreateFontAtlas(FontAtlasAutoRebuildMode.Async, true, label);
     }
     internal Exception? Error => glyphError ?? handles.FirstOrDefault(h => h.LoadException != null)?.LoadException;
     internal void Invalidate() => language = "";
     internal void Prepare(string selected, IEnumerable<string> strings)
     {
         if (selected == language) return;
-        using var suppress = atlas.SuppressAutoRebuild();
-        foreach (var handle in handles) { handle.ImFontChanged -= Changed; handle.Dispose(); }
+        Release();
         language = selected;
         required = strings.Concat(["English", "Deutsch", "Français", "Español", "Italiano", "Русский", "日本語", "한국어", "简体中文", "繁體中文", "Português (Brasil)", "Tiếng Việt", "Bahasa Indonesia", "Polski", "Türkçe", "Hindi (unavailable)", "♡", "—", "…"]).Distinct().ToArray();
         var ranges = required.SelectMany(text => MaterialText.NativeGlyphText(text).EnumerateRunes())
             .Where(rune => rune.Value <= ushort.MaxValue && !Rune.IsControl(rune)).Select(rune => (char)rune.Value)
             .Concat(Enumerable.Range(0x20, 0x250 - 0x20).Select(i => (char)i))
             .Concat(Enumerable.Range(0x400, 0x130).Select(i => (char)i)).ToGlyphRange();
-        glyphError = null; checkedGeneration = -1;
-        HindiAvailable = false;
-        handles = UiStyle.FontSizes.Select((pointSize, index) =>
-            MaterialFontAtlas.CreateFont(atlas, UiStyle.FontWeights[index], pointSize * 4 / 3, ranges, selected, assetRoot)).ToArray();
-        foreach (var handle in handles) handle.ImFontChanged += Changed;
+        var created = new List<IFontHandle>();
+        try
+        {
+            atlas = builder.CreateFontAtlas(FontAtlasAutoRebuildMode.OnNewFrame, true, label);
+            atlas.BuildStepChange += MaterialFontAtlas.ReleaseRasterizedInputs;
+            using var suppress = atlas.SuppressAutoRebuild();
+            for (var index = 0; index < UiStyle.FontSizes.Length; index++)
+            {
+                var handle = MaterialFontAtlas.CreateFont(atlas, UiStyle.FontWeights[index], UiStyle.FontSizes[index] * 4 / 3,
+                    ranges, selected, assetRoot, pageSize: 2048, includeHostLanguage: true);
+                created.Add(handle);
+                handle.ImFontChanged += Changed;
+            }
+            handles = created.ToArray();
+        }
+        catch (Exception error)
+        {
+            handles = created.ToArray();
+            Release();
+            language = selected;
+            glyphError = error;
+        }
     }
     private void Changed(IFontHandle handle, ILockedImFont font) => System.Threading.Interlocked.Increment(ref generation);
     internal unsafe bool Ready()
@@ -99,9 +118,19 @@ internal sealed class ManagedUiFonts : IDisposable
         statusDecorations.Paint();
         statusMotion.PostDraw();
     }
-    public void Dispose()
+    internal void Release()
     {
+        if (atlas is not null) atlas.BuildStepChange -= MaterialFontAtlas.ReleaseRasterizedInputs;
         foreach (var handle in handles) { handle.ImFontChanged -= Changed; handle.Dispose(); }
-        handles = []; atlas.Dispose();
+        handles = [];
+        atlas?.Dispose();
+        atlas = null;
+        language = "";
+        required = [];
+        checkedGeneration = -1;
+        glyphError = null;
+        HindiAvailable = false;
     }
+
+    public void Dispose() => Release();
 }
